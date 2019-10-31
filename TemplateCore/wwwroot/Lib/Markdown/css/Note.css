@@ -1,0 +1,14 @@
+﻿@media (min-width: 1200px) {
+    .container {
+        max-width: 100%;
+    }
+}
+
+.btn {
+    width: 8%;
+    line-height: 20px;
+    color: white;
+    background-color: cornflowerblue;
+    outline-color: white;
+    font: bold 18px/20px 宋体;
+}

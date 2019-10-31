@@ -1,0 +1,140 @@
+﻿@model DTO.Article
+@{
+    ViewData["Title"] = "MarkDown";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+
+<link href="~/Lib/MarkDown/css/editormd.css" rel="stylesheet" />
+<link href="~/Lib/MarkDown/css/editormd.preview.css" rel="stylesheet" />
+<script src="~/Lib/MarkDown/js/editormd.js"></script>
+<link href="~/Lib/MarkDown/css/Note.css?v=2" rel="stylesheet" />
+<style>
+    ol li {
+        list-style-type: decimal;
+        list-style-position: inside;
+    }
+
+    ul {
+        list-style-type: disc;
+    }
+</style>
+<div id="layout">
+    <div style="margin:auto;text-align:center;">
+        <button class="btn" id="get-md-btn">保存</button>
+        <button class="btn" id="md-demo">手册</button>
+        <button class="btn" id="back-last">关闭</button><br />
+    </div>
+    <br /><br />
+    <div id="test-editormd">
+        <textarea id="articleContent" style="display: none;">@Html.Raw(Model.Context)</textarea>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var testEditor;
+    $("#get-md-btn").bind('click', function () {
+        btnSave();
+    });
+    function btnSave() {
+        alert("html数据：" + testEditor.getHTML());
+        alert("markdown数据：" + testEditor.getMarkdown());
+        //保存大家根据需要保存文本就好。
+    }
+    $("#back-last").bind('click', function () {
+        window.close();
+    });
+    $(function () {
+        testEditor = editormd("test-editormd", {
+            width: "99%",
+            height: 640,
+            syncScrolling: "single",
+            path: "/Lib/MarkDown/lib/",
+            saveHTMLToTextarea: true,
+            emoji: true,
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            imageUploadURL: "/Editor/UpImage/@Model.Id"
+        });
+
+    });
+    $("#test-editormd").on('paste', function (ev) {
+        var items = (event.clipboardData || event.originalEvent.clipboardData).items;
+        for (var index in items) {
+            var item = items[index];
+            if (item.kind === 'file') {
+                var blob = item.getAsFile();
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    //将剪切板中复制信息转换成一种base64格式字符串
+                    var base64 = event.target.result;
+                        //ajax上传图片
+                        $.ajax({
+                            url: "/Editor/UpladFilePIC/@Model.Id",
+                            type: 'post',
+                            data: { 'base': base64},
+                            async: false,
+                            dataType: 'json',
+                            success: function (res) {
+                                if(res.code==1)//新一行的图片显示
+                                    testEditor.insertValue("\n![" + "image.png" + "](" + res.msg + ")");
+                            },
+                            error: function () {
+                                alert('图片上传错误');
+                            }
+                        });
+                    }
+                }; // data url!
+                var url = reader.readAsDataURL(blob);
+            }
+    });
+
+
+    $("#md-demo").bind('click', function () {
+        $.get("/Lib/MarkDown/examples/test.md", function (md) {
+            testEditor = editormd("test-editormd", {
+                width: "99%",
+                height: 740,
+                path: "/Lib/MarkDown/lib/",
+                appendMarkdown: "\n" + md,
+                saveHTMLToTextarea: true,
+                watch: false,
+                htmlDecode: true,
+                toolbar: false,
+                previewCodeHighlight: false,
+                tex: true,
+                flowChart: true,
+                sequenceDiagram: true,
+                emoji: true,
+                imageUpload    : true,
+                imageFormats   : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+                imageUploadURL : "../UpImage?ContextId=@Model.Id",
+                taskList: true,
+                onload: function () {
+                    console.log('onload', this);
+
+                    this.config("lineNumbers", false);
+
+                    this.config({
+                        toc: false,
+                        tex: false,
+                        toolbar: true,
+                        previewCodeHighlight: true,
+                        flowChart: false,
+                        sequenceDiagram: false,
+                        dialogLockScreen: false,
+                        dialogMaskOpacity: 0.5,       // 设置透明遮罩层的透明度，全局通用，默认值为0.1
+                        dialogDraggable: false,
+                        dialogMaskBgColor: "#000"
+                    });
+
+                    this.config("onresize", function () {
+                        console.log("onresize =>", this);
+                    });
+
+                    this.watch();
+                }
+            });
+        });
+    });
+</script>
+
