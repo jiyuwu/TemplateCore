@@ -1,10 +1,10 @@
 {
   "FileMap": {
-    "ImgPath": "D:\\myfile\\misc\\NPSPower\\TemplateCore\\TemplateCore\\wwwroot\\UpImg\\",
+    "ImgPath": "D:\\myfile\\TemplateCore\\TemplateCore\\wwwroot\\UpImg\\",
     "ImgWeb": "http://127.0.0.1:1994/UpImg/",
-    "FilePath": "D:\\myfile\\misc\\NPSPower\\TemplateCore\\TemplateCore\\wwwroot\\UpFile\\",
+    "FilePath": "D:\\myfile\\TemplateCore\\TemplateCore\\wwwroot\\UpFile\\",
     "FileWeb": "http://127.0.0.1:1994/UpFile/",
-    "VideoPath": "D:\\myfile\\misc\\NPSPower\\TemplateCore\\TemplateCore\\wwwroot\\UpVideo\\",
+    "VideoPath": "D:\\myfile\\TemplateCore\\TemplateCore\\wwwroot\\UpVideo\\",
     "VideoWeb": "http://127.0.0.1:1994/UpVideo/",
     "Web": "http://127.0.0.1:1994/"
   }
