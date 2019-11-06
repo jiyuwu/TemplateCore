@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(function () {
+        refreshNumJson();
+        refreshMixJson();
+        refreshAbcJson();
+    });
+    function refreshNum() {
+        var id = document.getElementById("numImg");
+        var str = "/Verify/NumberVerifyCode?random=" + Math.random();
+        id.setAttribute("src", str);
+    }
+    function refreshNumJson() {
+        $.ajax({
+            type: "get",
+            contentType: 'application/json',
+            url: '/Verify/NumberVerifyCodeJson?' + Math.random(),
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $("#numImgJson").attr("src", "data:image/png;base64," + data.msg);
+                console.log(data.code);
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
+
+    function refreshMix() {
+        var id = document.getElementById("mixImg");
+        var str = "/Verify/MixVerifyCode?random=" + Math.random();
+        id.setAttribute("src", str);
+    }
+    function refreshMixJson() {
+        $.ajax({
+            type: "get",
+            contentType: 'application/json',
+            url: '/Verify/MixVerifyCodeJson?' + Math.random(),
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $("#mixImgJson").attr("src", "data:image/png;base64," + data.msg);
+                console.log(data.code);
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
+
+    function refreshAbc() {
+        var id = document.getElementById("abcImg");
+        var str = "/Verify/AbcVerifyCode?random=" + Math.random();
+        id.setAttribute("src", str);
+    }
+    function refreshAbcJson() {
+        $.ajax({
+            type: "get",
+            contentType: 'application/json',
+            url: '/Verify/AbcVerifyCodeJson?' + Math.random(),
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                $("#abcImgJson").attr("src", "data:image/png;base64," + data.msg);
+                console.log(data.code);
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
+</script>
+
+
+<h2>图形数字验证码</h2>
+<img id="numImgJson" title="数字验证码Json获取"
+     alt="vcode" style="cursor:pointer;" onclick="refreshNumJson()" />
+<a href="javascript:void(0);" onclick="refreshNumJson()">看不清，换一张</a>
+<img id="numImg" title="数字验证码" src="/Verify/NumberVerifyCode?random=1994"
+     alt="vcode" style="cursor:pointer;" onclick="refreshNum()" />
+<a href="javascript:void(0);" onclick="refreshNum()">看不清，换一张</a>
+<h2>图形字母验证码</h2>
+<img id="abcImgJson" title="图形字母验证码Json获取"
+     alt="vcode" style="cursor:pointer;" onclick="refreshAbcJson()" />
+<a href="javascript:void(0);" onclick="refreshAbcJson()">看不清，换一张</a>
+<img id="abcImg" title="图形字母验证码" src="/Verify/AbcVerifyCode?random=1994"
+     alt="vcode" style="cursor:pointer;" onclick="refreshAbc()" />
+<a href="javascript:void(0);" onclick="refreshAbc()">看不清，换一张</a>
+<h2>图形混合验证码</h2>
+<img id="mixImgJson" title="图形混合验证码Json获取"
+     alt="vcode" style="cursor:pointer;" onclick="refreshMixJson()" />
+<a href="javascript:void(0);" onclick="refreshMixJson()">看不清，换一张</a>
+<img id="mixImg" title="图形混合验证码" src="/Verify/MixVerifyCode?random=1994"
+     alt="vcode" style="cursor:pointer;" onclick="refreshMix()" />
+<a href="javascript:void(0);" onclick="refreshMix()">看不清，换一张</a>
+
