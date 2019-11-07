@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Offce";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+<script type="text/javascript">
+    function DTEPPlusExport() {
+        $.ajax({
+            type: "post",
+            contentType: 'application/json',
+            url: '/Office/DTExportEPPlusExcel',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if (data.code == "success") {
+                    window.open("../" + data.msg);
+                    $("#DTEPPlusExcel").text("导出10w条耗时"+data.timeSeconds+"秒");
+                }
+                console.log(data.code);
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
+    function ModelEPPlusExport() {
+        $.ajax({
+            type: "post",
+            contentType: 'application/json',
+            url: '/Office/ModelExportEPPlusExcel',
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if (data.code == "success") {
+                    window.open("../" + data.msg);
+                    $("#ModelEPPlusExcel").text("导出10w条耗时"+data.timeSeconds+"秒");
+                }
+                console.log(data.code);
+            },
+            error: function (xhr) {
+                console.log(xhr.responseText);
+            }
+        });
+    }
+</script> 
+<style>
+    body {
+        margin:auto;
+        text-align:center;
+    }
+</style>
+<div style="margin-top:30px;">
+    <h3>EPPlus导出案例</h3>
+    <button type="button" class="btn btn-default" id="DTEPPlusExcel" onclick="DTEPPlusExport();">Excel导出测试（Datatable）</button>
+    <button type="button" class="btn btn-default" id="ModelEPPlusExcel" onclick="ModelEPPlusExport();">Excel导出测试（Model）</button>
+</div>
