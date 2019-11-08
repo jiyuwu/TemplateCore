@@ -129,7 +129,7 @@ namespace Common
 
         }
         /// <summary>
-        /// datatable导出Excel
+        /// Model导出Excel
         /// </summary>
         /// <param name="list">数据源</param>
         /// <param name="sWebRootFolder">webRoot文件夹</param>
@@ -230,7 +230,7 @@ namespace Common
         }
         #endregion
 
-        #region EPPluse
+        #region EPPluse导入
 
         #region 转换为datatable
         public static DataTable InputEPPlusByExcelToDT(FileInfo file)
@@ -297,7 +297,7 @@ namespace Common
         }
         #endregion
 
-        #region 从Excel中加载数据（泛型）+IEnumerable<T> LoadFromExcel<T>(string FileName) where T : new()
+        #region 转换为IEnumerable<T>
         /// <summary>
         /// 从Excel中加载数据（泛型）
         /// </summary>
