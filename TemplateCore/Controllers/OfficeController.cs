@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Common;
 using DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TemplateCore.Controllers
@@ -15,6 +17,8 @@ namespace TemplateCore.Controllers
         {
             return View();
         }
+
+        #region EPPlus导出Excel
         public string DTExportEPPlusExcel()
         {
             string code = "fail";
@@ -86,7 +90,7 @@ namespace TemplateCore.Controllers
                 articleList.Add(article);
             }
             string fileName = "MyModelExcel.xlsx";
-            string[] nameStrs = new string[4] {"ID", "标题", "内容", "时间" };//按照模型先后顺序，赋值需要的名称
+            string[] nameStrs = new string[4] {"Id", "Title", "Context", "CreateTime" };//按照模型先后顺序，赋值需要的名称
             string savePath = "wwwroot/Excel";//相对路径
             string msg = "Excel/" + fileName;//文件返回地址，出错就返回错误信息。
             System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
@@ -100,5 +104,55 @@ namespace TemplateCore.Controllers
             }
             return "{\"code\":\"" + code + "\",\"msg\":\"" + msg + "\",\"timeSeconds\":\"" + timespan.TotalSeconds + "\"}";
         }
+        #endregion
+
+        #region EPPlus导出数据
+        public async Task<string> ExcelImportEPPlusDTJsonAsync() {
+            IFormFileCollection files = Request.Form.Files;
+            DataTable articles = new DataTable();
+            int code = 0;
+            string msg = "失败！";
+            var file = files[0];
+            string path = ConfigHelper.GetSectionValue("FileMap:FilePath") + files[0].FileName;
+            using (FileStream fs = System.IO.File.Create(path))
+            {
+                await file.CopyToAsync(fs);
+                fs.Flush();
+            }
+            System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+            watch.Start();  //开始监视代码运行时间
+            FileInfo fileExcel = new FileInfo(path);
+            articles = OfficeHelper.InputEPPlusByExcelToDT(fileExcel);
+            TimeSpan timespan = watch.Elapsed;  //获取当前实例测量得出的总时间
+            watch.Stop();  //停止监视
+            code = 1; msg = "成功！";
+            string json = CommonHelper.GetJsonResult(code, msg, new { articles, timespan });
+            return json;
+        }
+
+        public async Task<string> ExcelImportEPPlusModelJsonAsync()
+        {
+            IFormFileCollection files = Request.Form.Files;
+            List<Article> articles = new List<Article>();
+            int code = 0;
+            string msg = "失败！";
+            var file = files[0];
+            string path = ConfigHelper.GetSectionValue("FileMap:FilePath")+files[0].FileName;
+            using (FileStream fs = System.IO.File.Create(path))
+            {
+                await file.CopyToAsync(fs);
+                fs.Flush();
+            }
+            System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+            watch.Start();  //开始监视代码运行时间
+            FileInfo fileExcel = new FileInfo(path);
+            articles=OfficeHelper.LoadFromExcel<Article>(fileExcel).ToList();
+            TimeSpan timespan = watch.Elapsed;  //获取当前实例测量得出的总时间
+            watch.Stop();  //停止监视
+            code = 1;msg = "成功！";
+            string json = CommonHelper.GetJsonResult(code, msg, new { articles, timespan });
+            return json;
+        }
+        #endregion
     }
 }

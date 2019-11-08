@@ -42,6 +42,44 @@
             }
         });
     }
+    function ExcelToModel() {
+        $("#filename").text(document.getElementById("ExcelToModel").files[0].name);
+        var formData = new FormData();  
+	    formData.append('file',document.getElementById("ExcelToModel").files[0]);  
+	    $.ajax({
+		    url: "../Office/ExcelImportEPPlusModelJson",
+		    type: "POST",
+		    data: formData,
+		    contentType: false,
+		    processData: false,
+		    dataType: "json",
+		    success: function(result){
+                if (result.code == 1) {
+                    console.log(result.data.articles);
+                    $("#ToModel").text("导入10w条耗时"+result.data.timespan+"秒");
+		    	}
+		    }
+	});
+    }
+    function ExcelToDT() {
+        $("#filename1").text(document.getElementById("ExcelToDT").files[0].name);
+        var formData = new FormData();  
+	    formData.append('file',document.getElementById("ExcelToDT").files[0]);  
+	    $.ajax({
+		    url: "../Office/ExcelImportEPPlusDTJson",
+		    type: "POST",
+		    data: formData,
+		    contentType: false,
+		    processData: false,
+		    dataType: "json",
+		    success: function(result){
+                if (result.code == 1) {
+                    console.log(result.data.articles);
+                    $("#ToDT").text("导入10w条耗时"+result.data.timespan+"秒");
+		    	}
+		    }
+	});
+    }
 </script> 
 <style>
     body {
@@ -53,4 +91,23 @@
     <h3>EPPlus导出案例</h3>
     <button type="button" class="btn btn-default" id="DTEPPlusExcel" onclick="DTEPPlusExport();">Excel导出测试（Datatable）</button>
     <button type="button" class="btn btn-default" id="ModelEPPlusExcel" onclick="ModelEPPlusExport();">Excel导出测试（Model）</button>
+    <h3>EPPlus导入案例</h3>
+    <div class="col-xs-12 col-sm-4 col-md-4" style="width:100%;">
+        <div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+            <label>Model:</label>
+            <button class="btn btn-success fileinput-button" type="button">上传</button>
+            <input type="file" accept=".xls,.xlsx" id="ExcelToModel" onchange="ExcelToModel(this.files[0])" style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+        </div>
+        <span id="filename" style="vertical-align: middle">未上传文件</span>
+        <span id="ToModel"></span>
+    </div><br /><br />
+    <div class="col-xs-12 col-sm-4 col-md-4" style="width:100%;">
+        <div class="file-container" style="display:inline-block;position:relative;overflow: hidden;vertical-align:middle">
+            <label>DataTable:</label>
+            <button class="btn btn-success fileinput-button" type="button">上传</button>
+            <input type="file" accept=".xls,.xlsx" id="ExcelToDT" onchange="ExcelToDT(this.files[0])" style="position:absolute;top:0;left:0;font-size:34px; opacity:0">
+        </div>
+        <span id="filename1" style="vertical-align: middle">未上传文件</span>
+        <span id="ToDT"></span>
+    </div>
 </div>
