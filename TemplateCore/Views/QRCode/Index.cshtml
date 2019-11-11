@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+<script type="text/javascript">
+    function PTCreate() {
+        pt = escape($("#PT").val());//防止中文等特殊字符引起问题
+        ptSize = $("#PTSize").val();
+        window.open("../QRCode/GetPTQRCode?url="+pt+"&pixel="+ptSize, '_blank');
+    }
+    function LogoCreate() {
+        logo = escape($("#Logo").val());
+        logoPath = escape($("#LogoPath").val());
+        logoSize = $("#LogoSize").val();
+        window.open("../QRCode/GetLogoQRCode?url="+logo+"&logoPath="+logoPath+"&pixel="+logoSize, '_blank');
+    }
+</script>
+<div style="width:60%; margin:auto;text-align:center;">
+    <h2>普通二维码</h2>
+    <input type="text" class="form-control" id="PT" placeholder="请输入字符">
+    <input type="text" class="form-control" id="PTSize" placeholder="请输入大小">
+    <button type="submit" class="btn btn-default" onclick="PTCreate();">生成</button><br />
+    <h2>Logo二维码</h2>
+    <input type="text" class="form-control" id="Logo" placeholder="请输入字符">
+    <input type="text" class="form-control" id="LogoSize" placeholder="请输入大小">
+    <input type="text" class="form-control" id="LogoPath" placeholder="请输入位置" value="\Lib\Markdown\images\logos\editormd-logo-32x32.png">
+    <button type="submit" class="btn btn-default" onclick="LogoCreate();">生成</button>
+</div>
+
