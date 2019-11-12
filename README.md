@@ -7,3 +7,5 @@
 ##### 1.图形验证码                    https://www.cnblogs.com/jiyuwu/p/11803979.html
 #### 三、Office操作
 ##### 1.EPPlus操作Excel                https://www.cnblogs.com/jiyuwu/p/11820783.html
+#### 四、二维码
+##### 1.生成专属二维码                https://www.cnblogs.com/jiyuwu/p/11841091.html
