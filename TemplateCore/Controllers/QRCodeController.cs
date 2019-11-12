@@ -23,7 +23,7 @@ namespace TemplateCore.Controllers
         {
             return View();
         }
-        public void GetPTQRCode(string url, int pixel=5)
+        public IActionResult GetPTQRCode(string url, int pixel=5)
         {
             url = HttpUtility.UrlDecode(url);
             Response.ContentType = "image/jpeg";
@@ -31,11 +31,9 @@ namespace TemplateCore.Controllers
             var bitmap = QRCoderHelper.GetPTQRCode(url, pixel);
             MemoryStream ms = new MemoryStream();
             bitmap.Save(ms, ImageFormat.Jpeg);
-
-            Response.Body.WriteAsync(ms.GetBuffer(), 0, Convert.ToInt32(ms.Length));
-            Response.Body.Close();
+            return File(ms.ToArray(), "image/png");
         }
-        public void GetLogoQRCode(string url,string logoPath, int pixel = 5)
+        public IActionResult GetLogoQRCode(string url,string logoPath, int pixel = 5)
         {
             url = HttpUtility.UrlDecode(url);
             logoPath= webHostEnvironment.WebRootPath + HttpUtility.UrlDecode(logoPath);
@@ -44,9 +42,7 @@ namespace TemplateCore.Controllers
             var bitmap = QRCoderHelper.GetLogoQRCode(url, logoPath, pixel);
             MemoryStream ms = new MemoryStream();
             bitmap.Save(ms, ImageFormat.Jpeg);
-
-            Response.Body.WriteAsync(ms.GetBuffer(), 0, Convert.ToInt32(ms.Length));
-            Response.Body.Close();
+            return File(ms.ToArray(), "image/png");
         }
     }
 }
