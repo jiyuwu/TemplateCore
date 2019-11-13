@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.DrawingCore;
 using System.DrawingCore.Imaging;
 using System.IO;
@@ -142,8 +143,9 @@ namespace Common
         }
         #endregion
         #region json序列化与反序列化
-        #region model<->json
-        public static string GetJson<T>(T obj)
+        #region model<->json(对象和json互转)
+        #region DataContractJsonSerializer
+        public static string SerializeDataContractJson<T>(T obj)
         {
             DataContractJsonSerializer json = new DataContractJsonSerializer(obj.GetType());
             using (MemoryStream stream = new MemoryStream())
@@ -153,7 +155,7 @@ namespace Common
                 return szJson;
             }
         }
-        public static T ParseFromJson<T>(string szJson)
+        public static T DeserializeDataContractJson<T>(string szJson)
         {
             T obj = Activator.CreateInstance<T>();
             using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(szJson)))
@@ -162,6 +164,9 @@ namespace Common
                 return (T)serializer.ReadObject(ms);
             }
         }
+        #endregion
+
+        #region Newtonsoft
         static public string SerializeJSON<T>(T data)
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(data);
@@ -171,26 +176,60 @@ namespace Common
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
         }
         #endregion
-        #region list<->josn
-        /// <summary>   
-        ///  将json转成实体对象
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="JsonStr"></param>
-        /// <returns></returns>
-        public static List<T> GetListFromJson<T>(string JsonStr)
+        #endregion
+
+        #region datatable<->json（datatable和json互转）
+        public static string SerializeDataTableToJSON(DataTable dt)
         {
-            //JavaScriptSerializer Serializer = new JavaScriptSerializer();
-            //List<T> objs = Serializer.Deserialize<List<T>>(JsonStr);
-            //return objs;
-            List<T> objs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(JsonStr);
-            return objs;
+            return Newtonsoft.Json.JsonConvert.SerializeObject(dt);
         }
-        static public string SerializeJSON<T>(List<T> data)
+        public static DataTable SerializeJSONToDataTable(string json)
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<DataTable>(json);
+        }
+        #region 自己写datatable转json用于测试速度对比下
+        public static string MyDataTableToJson(DataTable dt)
+        {
+            StringBuilder JsonString = new StringBuilder();
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                JsonString.Append("{ ");
+                JsonString.Append("\"TableInfo\":[ ");
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    JsonString.Append("{ ");
+                    for (int j = 0; j < dt.Columns.Count; j++)
+                    {
+                        if (j < dt.Columns.Count - 1)
+                        {
+                            JsonString.Append("\"" + dt.Columns[j].ColumnName.ToString() + "\":" + "\"" + dt.Rows[i][j].ToString() + "\",");
+                        }
+                        else if (j == dt.Columns.Count - 1)
+                        {
+                            JsonString.Append("\"" + dt.Columns[j].ColumnName.ToString() + "\":" + "\"" + dt.Rows[i][j].ToString() + "\"");
+                        }
+                    }
+                    if (i == dt.Rows.Count - 1)
+                    {
+                        JsonString.Append("} ");
+                    }
+                    else
+                    {
+                        JsonString.Append("}, ");
+                    }
+                }
+                JsonString.Append("]}");
+                return JsonString.ToString();
+            }
+            else
+            {
+                return null;
+            }
         }
         #endregion
+        #endregion
+
+
 
         #region 返回json
         /// <summary>
@@ -217,7 +256,6 @@ namespace Common
             return "{\"code\":\"" + code + "\",\"msg\":\"" + msg + "\"}";
         }
         #endregion
-
 
         #endregion
 

@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "Json";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+
+    <div style="width:80%;margin:auto;text-align:center;">
+        <div class="cover" style="border: 1px solid #D6D6D6;padding: 5px;">
+            <h2>10万对象与json互转</h2>
+            <span>SerializeDataContractJson：对象集合转json（@ViewBag.t1 秒），json转对象集合（@ViewBag.t3 秒）</span><br />
+            <span>Newtonsoft：对象集合转json（@ViewBag.t2 秒），json转对象集合（@ViewBag.t4 秒）</span>
+        </div>
+        <div class="cover" style="border: 1px solid #D6D6D6;padding: 5px;">
+            <h2>10万datatable与json互转</h2>
+            <span>Newtonsoft：datatable转json（@ViewBag.t5 秒），json转datatable（@ViewBag.t6 秒）</span><br />
+            <span>自己码：datatable转json（@ViewBag.t7 秒）</span>
+        </div>
+    </div>
+
