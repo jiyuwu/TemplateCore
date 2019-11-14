@@ -9,3 +9,5 @@
 ##### 1.EPPlus操作Excel                https://www.cnblogs.com/jiyuwu/p/11820783.html
 #### 四、二维码
 ##### 1.生成专属二维码                https://www.cnblogs.com/jiyuwu/p/11841091.html
+#### 五、序列化Json
+##### 1.Json常用转换                  https://www.cnblogs.com/jiyuwu/p/11841091.html
