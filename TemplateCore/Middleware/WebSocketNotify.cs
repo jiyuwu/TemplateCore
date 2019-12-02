@@ -18,7 +18,7 @@ namespace TemplateCore.Middleware
         /// </summary>
         private readonly RequestDelegate _next;
         /// <summary>
-        /// 
+        /// 构造函数传入下一个中间件
         /// </summary>
         /// <param name="next"></param>
         public WebSocketNotify(RequestDelegate next)
@@ -45,7 +45,7 @@ namespace TemplateCore.Middleware
                     Thread.Sleep(1000);
                 }
             }
-            return this._next(context);
+            return this._next(context);//调用下一个中间件
 
         }
         /// <summary>
