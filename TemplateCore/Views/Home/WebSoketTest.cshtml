@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewData["Title"] = "WebSoketTest";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+<script>
+    var socket;
+    var uri = "ws://127.0.0.1:1994/ws";
+    //初始化连接
+    function doConnect(open, accept, close, error) {
+        console.log("doConnect")
+        //创建websocket,并定义事件回调
+        socket = new WebSocket(uri);
+        socket.onopen = function (e) { open(); };
+        socket.onclose = function (e) { close(); };
+        socket.onmessage = function (e) {
+            accept(e.data);
+        };
+        socket.onerror = function (e) { error(e.data); };
+    }
+    //发送信息
+    function doSend(message) {
+        console.log("doSend")
+        socket.send(message);
+    }
+    //关闭socket
+    function doClose() {
+        console.log("doClose")
+        socket.close();
+    }
+    //打开连接回调
+    function open() {
+        console.log("open")
+        document.getElementById("message").innerText = "连接打开";
+    }
+    //接收数据回调
+    function accept(result) {
+        console.log("accept")
+        document.getElementById("output").innerText = result;
+    }
+    //关闭连接回调
+    function close() {
+        console.log("close")
+        document.getElementById("message").innerText = "连接关闭";
+    }//错误回调
+    function error(result) {
+        console.log("error")
+        alert("错误：" + result);
+    }
+    //开始方法
+    function start() {
+        console.log("start")
+        doConnect(open, accept, close, error);
+    }
+    function send() {
+        console.log("send")
+        doSend(document.getElementById("sendtxt").value);
+    }
+</script>
+
+
+<div>
+    当前在数据：<div id="message"></div>
+    <div id="output"></div>
+    <input class="form-control" type="text" id="sendtxt" value="测试" />
+    <input type="button" onclick="start()" value="开始" />
+    <input type="button" onclick="send()" value="发送" />
+</div>
+
+
+

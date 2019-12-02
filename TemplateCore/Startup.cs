@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using TemplateCore.Middleware;
 
 namespace TemplateCore
 {
@@ -28,6 +29,11 @@ namespace TemplateCore
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            #region websocketÖÐ¼ä¼þ
+            app.UseWebSockets();
+            app.UseWebSocketNotify();
+            #endregion
 
             app.UseStaticFiles();
             app.UseRouting();

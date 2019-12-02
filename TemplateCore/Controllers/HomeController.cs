@@ -150,6 +150,11 @@ namespace TemplateCore.Controllers
         }
         #endregion
 
-
+        #region websocket案例
+        public IActionResult WebSoketTest()
+        {
+            return View();
+        }
+        #endregion
     }
 }
