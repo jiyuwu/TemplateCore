@@ -35,6 +35,9 @@ namespace TemplateCore
             app.UseWebSocketNotify();
             #endregion
 
+            #region 异常中间件
+            app.UseMyException();
+            #endregion
             app.UseStaticFiles();
             app.UseRouting();
             app.UseEndpoints(endpoints =>
@@ -44,7 +47,6 @@ namespace TemplateCore
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-            app.UseMyException();
         }
     }
 }
