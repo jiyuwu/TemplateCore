@@ -44,6 +44,7 @@ namespace TemplateCore
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+            app.UseMyException();
         }
     }
 }

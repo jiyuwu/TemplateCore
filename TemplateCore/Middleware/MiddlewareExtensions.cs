@@ -18,5 +18,16 @@ namespace TemplateCore.Middleware
         {
             return builder.UseMiddleware<WebSocketNotify>();
         }
+
+        /// <summary>
+        /// 使用myException拦截异常
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static IApplicationBuilder UseMyException(
+          this IApplicationBuilder builder)
+        {
+            return builder.UseMiddleware<MyException>();
+        }
     }
 }
