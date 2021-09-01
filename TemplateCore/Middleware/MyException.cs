@@ -29,7 +29,7 @@ namespace TemplateCore.Middleware
             }
             catch (Exception ex)//异常捕获
             {
-                Console.WriteLine(string.Format("{0}异常捕获,打印日志：{1}",DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ms")), ex.ToString()));
+                Console.WriteLine(string.Format("{0}异常捕获,打印日志：{1}",DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ms"), ex.ToString()));
                 if (context.Response.HasStarted)
                 {
                     throw;
