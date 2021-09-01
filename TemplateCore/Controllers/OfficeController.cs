@@ -106,14 +106,19 @@ namespace TemplateCore.Controllers
         }
         #endregion
 
-        #region EPPlus导出数据
+        #region EPPlus导入数据
         public async Task<string> ExcelImportEPPlusDTJsonAsync() {
             IFormFileCollection files = Request.Form.Files;
             DataTable articles = new DataTable();
             int code = 0;
             string msg = "失败！";
             var file = files[0];
-            string path = ConfigHelper.GetSectionValue("FileMap:FilePath") + files[0].FileName;
+            string dirfile = ConfigHelper.GetSectionValue("FileMap:FilePath");
+            if (!Directory.Exists(dirfile))
+            {
+                Directory.CreateDirectory(dirfile);
+            }
+            string path = dirfile + files[0].FileName;
             using (FileStream fs = System.IO.File.Create(path))
             {
                 await file.CopyToAsync(fs);
@@ -137,7 +142,12 @@ namespace TemplateCore.Controllers
             int code = 0;
             string msg = "失败！";
             var file = files[0];
-            string path = ConfigHelper.GetSectionValue("FileMap:FilePath")+files[0].FileName;
+            string dirfile = ConfigHelper.GetSectionValue("FileMap:FilePath");
+            if (!Directory.Exists(dirfile))
+            {
+                Directory.CreateDirectory(dirfile);
+            }
+            string path = dirfile + files[0].FileName;
             using (FileStream fs = System.IO.File.Create(path))
             {
                 await file.CopyToAsync(fs);
