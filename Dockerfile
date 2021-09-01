@@ -17,6 +17,9 @@ RUN dotnet build "TemplateCore.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "TemplateCore.csproj" -c Release -o /app/publish
 
+RUN apt-get update -y
+RUN apt-get install -y --no-install-recommends libgdiplus libc6-dev
+
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
