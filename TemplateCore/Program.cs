@@ -20,7 +20,7 @@ namespace TemplateCore
         public static IWebHost BuildWebHost(string[] args) =>
                  WebHost.CreateDefaultBuilder(args)
                  .UseStartup<Startup>()
-                 .UseUrls("http://127.0.0.1:1994")
+                 .UseUrls("http://*:1994")
                  .Build();
     }
 }

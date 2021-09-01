@@ -1,10 +1,10 @@
 {
   "FileMap": {
-    "ImgPath": "/app/publish/UpImg/",
+    "ImgPath": "/app/wwwroot/UpImg/",
     "ImgWeb": "https://templatecore.jiyuwu.cn/UpImg/",
-    "FilePath": "/app/publish/UpFile/",
+    "FilePath": "/app/wwwroot/UpFile/",
     "FileWeb": "https://templatecore.jiyuwu.cn/UpFile/",
-    "VideoPath": "/app/publish/UpVideo/",
+    "VideoPath": "/app/wwwroot/UpVideo/",
     "VideoWeb": "https://templatecore.jiyuwu.cn/UpVideo/",
     "Web": "https://templatecore.jiyuwu.cn/"
   }
