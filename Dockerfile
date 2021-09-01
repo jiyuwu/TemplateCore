@@ -17,6 +17,11 @@ RUN dotnet build "TemplateCore.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "TemplateCore.csproj" -c Release -o /app/publish
 
+RUN  sed -i s@/archive.ubuntu.com/@/mirrors.163.com/@g /etc/apt/sources.list
+RUN  sed -i 's#/deb.debian.org#/mirrors.aliyun.com#g' /etc/apt/sources.list
+RUN  apt-get clean
+RUN apt-get update -y
+RUN apt-get install -y --no-install-recommends libgdiplus libc6-dev
 RUN apt-get update -y
 RUN apt-get install -y --no-install-recommends libgdiplus libc6-dev
 
