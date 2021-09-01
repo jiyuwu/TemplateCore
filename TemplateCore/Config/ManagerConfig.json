@@ -1,11 +1,11 @@
 {
   "FileMap": {
-    "ImgPath": "/app/wwwroot/UpImg/",
-    "ImgWeb": "https://templatecore.jiyuwu.cn/UpImg/",
-    "FilePath": "/app/wwwroot/UpFile/",
-    "FileWeb": "https://templatecore.jiyuwu.cn/UpFile/",
-    "VideoPath": "/app/wwwroot/UpVideo/",
-    "VideoWeb": "https://templatecore.jiyuwu.cn/UpVideo/",
+    "ImgPath": "/app/wwwroot/files/UpImg/",
+    "ImgWeb": "https://templatecore.jiyuwu.cn/files/UpImg/",
+    "FilePath": "/app/wwwroot/files/UpFile/",
+    "FileWeb": "https://templatecore.jiyuwu.cn/files/UpFile/",
+    "VideoPath": "/app/wwwroot/files/UpVideo/",
+    "VideoWeb": "https://templatecore.jiyuwu.cn/files/UpVideo/",
     "Web": "https://templatecore.jiyuwu.cn/"
   }
 }
