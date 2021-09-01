@@ -32,14 +32,14 @@ jobs:
         docker build . --file ./Dockerfile --tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
         # 推送镜像到镜像仓库
         docker push ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
-    # # 部署到服务器
-    # - name: Deploy
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.HOST }}
-    #     username: ${{ secrets.USERNAME }}
-    #     password: ${{ secrets.PASSWORD }}
-    #     port: ${{ secrets.PORT }}
-    #     script: |
-    #       docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY }}
-    #       kubectl set image Deployment h5-deployment h5=${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
+    # 部署到服务器
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+          docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY }}
+          kubectl set image StatefulSet templatecore-statefulset templatecore=${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
