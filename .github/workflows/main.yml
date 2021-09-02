@@ -42,4 +42,4 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY }}
-          kubectl set image StatefulSet templatecore-statefulset templatecore=${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
+          kubectl set image StatefulSet templatecore templatecore=${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
