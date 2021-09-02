@@ -107,7 +107,7 @@ namespace TemplateCore.Controllers
         #endregion
 
         #region Kindeditor
-        private string KindStr = "Kind";//前缀文件名，可自行修改
+        private string KindStr = "../../../files/UpFile/Kind";//前缀文件名，可自行修改
         public IActionResult Kindeditor()
         {
             Article article = new Article();
