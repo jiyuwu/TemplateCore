@@ -148,7 +148,7 @@ namespace TemplateCore.Controllers
             }
 
             //创建文件夹
-            string dirPath = ConfigHelper.GetSectionValue("FileMap:FilePath") + "\\"+ KindStr + "\\" + dir + "\\";
+            string dirPath = ConfigHelper.GetSectionValue("FileMap:FilePath") + "/"+ KindStr + "/" + dir + "/";
             string webPath = "/" + KindStr + "/" + dir + "/";
             if (!Directory.Exists(dirPath))
             {
@@ -156,7 +156,7 @@ namespace TemplateCore.Controllers
             }
 
             String ymd = DateTime.Now.ToString("yyyyMMdd", DateTimeFormatInfo.InvariantInfo);
-            dirPath += ymd + "\\";
+            dirPath += ymd + "/";
             webPath += ymd + "/";
             if (!Directory.Exists(dirPath))
             {
@@ -202,7 +202,7 @@ namespace TemplateCore.Controllers
             String currentDirPath = "";
             String moveupDirPath = "";
 
-            String dirPath = ConfigHelper.GetSectionValue("FileMap:FilePath") + "\\Kind" + "\\";
+            String dirPath = ConfigHelper.GetSectionValue("FileMap:FilePath") + "/Kind" + "/";
             String dirName = Request.Query["dir"];
             if (!String.IsNullOrEmpty(dirName))
             {
