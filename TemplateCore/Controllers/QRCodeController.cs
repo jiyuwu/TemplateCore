@@ -19,8 +19,13 @@ namespace TemplateCore.Controllers
         {
             webHostEnvironment=_webHostEnvironment;
         }
-        public IActionResult Index()
+        public IActionResult Index(string url)
         {
+            ViewBag.URL = "www.jiyuwu.com";
+            if (!string.IsNullOrWhiteSpace(url))
+            {
+                ViewBag.URL = url;
+            }
             return View();
         }
         public IActionResult GetPTQRCode(string url, int pixel=5)
