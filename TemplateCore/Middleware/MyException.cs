@@ -42,6 +42,7 @@ namespace TemplateCore.Middleware
                 }
                 catch (Exception ex2)
                 {
+                    Console.WriteLine(string.Format("{0}异常捕获,返回500出错打印日志：{1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss:ms"), ex2.ToString()));
                 }
                 throw;
             }
