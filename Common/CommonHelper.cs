@@ -302,5 +302,21 @@ namespace Common
             JIYUWU.TXT.TXTHelper.WriteLog(s, path);
         }
         #endregion
+
+
+        #region 密码生成
+        public static string MakePassword(int pwdLength,string pwdchars)
+        { 
+            StringBuilder tmpstr = new StringBuilder();
+            int iRandNum;
+            Random rnd = new Random();
+            for (int i = 0; i < pwdLength; i++)
+            {   
+                iRandNum = rnd.Next(pwdchars.Length);
+                tmpstr.Append(pwdchars[iRandNum]);
+            }
+            return tmpstr.ToString();
+        }
+        #endregion
     }
 }
