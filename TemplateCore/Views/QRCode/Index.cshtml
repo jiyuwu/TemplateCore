@@ -28,12 +28,12 @@
 </script>
 <div style="width:60%; margin:auto;text-align:center;">
     <h2>普通二维码</h2>
-    <input type="text" class="form-control" id="PT" placeholder="请输入字符" value="www.jiyuwu.com"><button onclick="PTCreate();">生成</button>
+    <input type="text" class="form-control" id="PT" placeholder="请输入字符" value="@Html.Raw(ViewBag.URL)"><button onclick="PTCreate();">生成</button>
     <input type="range" name="points" id="PTSize" value="5" min="1" max="20" onchange="PTCreate();">
     <br />
     <img id="PTImg" />
     <h2>带Logo二维码</h2>
-    <input type="text" class="form-control" id="Logo" placeholder="请输入字符" value="www.jiyuwu.com">
+    <input type="text" class="form-control" id="Logo" placeholder="请输入字符" value="@Html.Raw(ViewBag.URL)">
     <input type="text" class="form-control" id="LogoPath" placeholder="logo位置" value="/Img/logo.png">
     <button onclick="LogoCreate();">生成</button>
     <input type="range" name="points" id="LogoSize" value="5" min="1" max="20" onchange="LogoCreate();">
