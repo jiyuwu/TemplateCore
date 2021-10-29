@@ -28,12 +28,12 @@ jobs:
         # 登录阿里云镜像仓库
         docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY }}
         # 使用Dockerfile构建镜像
-        docker build . --file ./Dockerfile --tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.ref }}
+        docker build . --file ./Dockerfile --tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
         # 推送镜像到镜像仓库
-        docker push ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.ref }}
+        docker push ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
         echo ${{ secrets.AUTO_TOKEN }} | docker login ghcr.io -u jiyuwu --password-stdin
-        docker tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.ref }} ghcr.io/jiyuwu/templatecore:${{ github.ref }}
-        docker push ghcr.io/jiyuwu/templatecore:${{ github.ref }}
+        docker tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }} ghcr.io/jiyuwu/templatecore:tag
+        docker push ghcr.io/jiyuwu/templatecore:tag
         
     # 部署到服务器
     - name: Deploy
@@ -45,4 +45,4 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY }}
-          kubectl set image StatefulSet templatecore templatecore=${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.ref }}
+          kubectl set image StatefulSet templatecore templatecore=${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
