@@ -5,8 +5,9 @@ name: CI
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
-  release:
-    types: [published]
+  push:
+    tags:
+    - 'v*'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -27,12 +28,12 @@ jobs:
         # 登录阿里云镜像仓库
         docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY }}
         # 使用Dockerfile构建镜像
-        docker build . --file ./Dockerfile --tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
+        docker build . --file ./Dockerfile --tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.ref }}
         # 推送镜像到镜像仓库
-        docker push ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
+        docker push ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.ref }}
         echo ${{ secrets.AUTO_TOKEN }} | docker login ghcr.io -u jiyuwu --password-stdin
-        docker tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }} ghcr.io/jiyuwu/templatecore:${{ github.new_release_version }}
-        docker push ghcr.io/jiyuwu/templatecore:${{ github.new_release_version }}
+        docker tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.ref }} ghcr.io/jiyuwu/templatecore:${{ github.ref }}
+        docker push ghcr.io/jiyuwu/templatecore:${{ github.ref }}
         
     # 部署到服务器
     - name: Deploy
@@ -44,4 +45,4 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }} ${{ secrets.DOCKER_REGISTRY }}
-          kubectl set image StatefulSet templatecore templatecore=${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
+          kubectl set image StatefulSet templatecore templatecore=${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.ref }}
