@@ -1,0 +1,23 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: | 
+        docker version
+        echo ${{ secrets.AUTO_TOKEN }} | docker login ghcr.io -u jiyuwu --password-stdin
+        docker build . --file ./Dockerfile --tag ghcr.io/jiyuwu/templatecore:v${{ github.new_release_version }}
+        docker push ghcr.io/jiyuwu/templatecore:v${{ github.new_release_version }}
