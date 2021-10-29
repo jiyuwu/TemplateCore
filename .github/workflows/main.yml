@@ -33,8 +33,8 @@ jobs:
         # 推送镜像到镜像仓库
         docker push ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }}
         echo ${{ secrets.AUTO_TOKEN }} | docker login ghcr.io -u jiyuwu --password-stdin
-        docker tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }} ghcr.io/jiyuwu/templateCore:${{ github.sha }}
-        docker push ghcr.io/jiyuwu/templateCore:${{ github.sha }}
+        docker tag ${{ secrets.DOCKER_REGISTRY }}/jiyuwu/templatecore:${{ github.sha }} ghcr.io/jiyuwu/templatecore:${{ github.sha }}
+        docker push ghcr.io/jiyuwu/templatecore:${{ github.sha }}
         
     # 部署到服务器
     - name: Deploy
