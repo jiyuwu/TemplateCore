@@ -3,8 +3,12 @@
 name: CI
 
 on:
-  release:
-    types: [created]
+  push:
+    tags:
+    - 'v*'
+ # release:
+ #   types: [created]
+
 
 jobs:
   # This workflow contains a single job called "build"
@@ -14,10 +18,24 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    - name: Get version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+    
+    - name: Create Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.AUTO_TOKEN }}
+      with:
+        tag_name: ${{ steps.get_version.outputs.VERSION }}
+        release_name: ${{ steps.get_version.outputs.VERSION }}
+        draft: false
+        prerelease: false
+        
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: | 
         docker version
         echo ${{ secrets.AUTO_TOKEN }} | docker login ghcr.io -u jiyuwu --password-stdin
-        docker build . --file ./Dockerfile --tag ghcr.io/jiyuwu/templatecore:v${{ github.new_release_version }}
-        docker push ghcr.io/jiyuwu/templatecore:v${{ github.new_release_version }}
+        docker build . --file ./Dockerfile --tag ghcr.io/jiyuwu/templatecore:${{ steps.get_version.outputs.VERSION }}
+        docker push ghcr.io/jiyuwu/templatecore:${{ steps.get_version.outputs.VERSION }}
