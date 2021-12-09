@@ -156,5 +156,21 @@ namespace TemplateCore.Controllers
             return View();
         }
         #endregion
+
+
+        #region 容器ip
+        // GET Home/GetIp
+        [HttpGet]
+        public ActionResult<string> GetIp()
+        {
+            var ip = this.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = this.Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            }
+            return ip;
+        }
+        #endregion
+
     }
 }
