@@ -40,5 +40,22 @@ namespace TemplateCore.Controllers
                 code = 1;
             return CommonHelper.GetJsonResult(code, password);
         }
+        public IActionResult HtmlToText()
+        {
+            return View();
+        }
+        [HttpPost]
+        public string HtmlConvertText(string str)
+        {
+            int code = 0;
+            TextHelper textHelper = new TextHelper();
+            if (!string.IsNullOrWhiteSpace(str))
+            {
+                code = 1;
+                str = textHelper.Convert(str);
+            }
+            else { str = "失败！"; }
+            return CommonHelper.GetJsonResult(code, str);
+        }
     }
 }

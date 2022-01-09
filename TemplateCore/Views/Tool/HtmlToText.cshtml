@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "html转文本";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+    function HtmlConvertText() {
+       var html=$("#html").val();
+        $.ajax({
+            type: "post",
+            contentType: 'application/x-www-form-urlencoded',
+            dataType: "json",
+            cache: false,
+            data: {
+                str: html
+            },
+            url: "../../Tool/HtmlConvertText",
+            async: true,
+            success: function (data) {
+                if (data.code == 1) {
+                    $("#text").text(data.msg);
+                }
+                else {
+                    $("#text").text(data.msg);
+                }
+            }
+        });
+    }
+</script>
+
+<div style="text-align:center;">
+  <div class="form-group row" style="width:40%;float:left;">
+    <label for="html" class="col-sm-2 col-form-label">源html</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" id="html" rows="26"></textarea>
+    </div>
+  </div>
+    <button type="button" class="btn btn-primary" style="margin:0 auto;margin-top:200px;" onclick="HtmlConvertText();">转换</button>
+  <div class="form-group row" style="width:40%;float:right;margin-right:20px;">
+    <label for="text" class="col-sm-2 col-form-label">文本内容</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" id="text" rows="26"></textarea>
+    </div>
+  </div>
+  </div>
