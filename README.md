@@ -1,7 +1,12 @@
 # TemplateCore
 .Net Core Good Template （.Net Core 的通用模板项目）   
 
+[![TemplateCore Stargazers over time](https://starchart.cc/jiyuwu/TemplateCore.svg)](https://starchart.cc/jiyuwu/TemplateCore)
 
+
+[![GitHub stars](https://img.shields.io/github/stars/jiyuwu/TemplateCore)](https://github.com/jiyuwu/TemplateCore/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/jiyuwu/TemplateCore)](https://github.com/jiyuwu/TemplateCore/network)
+[![GitHub license](https://img.shields.io/github/license/jiyuwu/TemplateCore)](https://github.com/jiyuwu/TemplateCore/master/LICENSE)
 
 在线预览地址： [.NET CORE模板导航 (jiyuwu.com)](https://templatecore.jiyuwu.com/)
 
