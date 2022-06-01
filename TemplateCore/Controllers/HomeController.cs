@@ -16,6 +16,7 @@ namespace TemplateCore.Controllers
         public IConfiguration Configuration;
         public IActionResult Index()
         {
+            CommonHelper.WriteLog("Index Show");
             return View();
         }
         #region 配置读取 settings read

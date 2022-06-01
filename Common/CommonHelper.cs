@@ -281,7 +281,7 @@ namespace Common
         public static void WriteLog(string s)
         {
             var path = Directory.GetCurrentDirectory()+"\\LogAll";//文件保存位置
-            JIYUWU.TXT.TXTHelper.WriteLog(s, path);
+            TextHelper.WriteLog(s, path);
         }
         /// <summary>
         /// 错误日志保存
@@ -290,7 +290,7 @@ namespace Common
         public static void WriteErrorLog(string s)
         {
             var path = Directory.GetCurrentDirectory()+ "\\LogAll\\LogError";
-            JIYUWU.TXT.TXTHelper.WriteLog(s, path);
+            TextHelper.WriteLog(s, path);
         }
         /// <summary>
         /// 警告日志保存
@@ -299,7 +299,7 @@ namespace Common
         public static void WriteWareLog(string s)
         {
             var path = Directory.GetCurrentDirectory() + "\\LogAll\\LogWare";
-            JIYUWU.TXT.TXTHelper.WriteLog(s, path);
+            TextHelper.WriteLog(s, path);
         }
         #endregion
 
