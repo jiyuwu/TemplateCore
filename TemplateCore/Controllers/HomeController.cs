@@ -19,6 +19,12 @@ namespace TemplateCore.Controllers
             CommonHelper.WriteLog("Index Show");
             return View();
         }
+
+        public IActionResult IndexPage()
+        {
+            return View();
+        }
+
         #region 配置读取 settings read
         public string TestAppSettings()
         {
