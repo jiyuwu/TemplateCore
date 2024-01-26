@@ -3,21 +3,113 @@
     ViewData["Title"] = ".NET CORE模板导航";
     Layout = "~/Views/Share/_Layout.cshtml";
 }
-@*为帮助更多开发者高速上手.NET CORE，我们决定开启.NET CORE模板开源项目，机遇屋欢迎感兴趣的人一起造轮子。微信公众号：机遇屋JIYUWU，我们的官网：www.jiyuwu.com*@
-<div style="margin:auto;text-align:center;">
-    <h4>一、那些著名的富文本编辑器（WebEditor）</h4>
-    1.<a href="../Editor/MarkDown" target="_blank">MarkDown</a>|2.<a href="../Editor/Kindeditor" target="_blank">Kindeditor</a>
-    <h4>二、验证码</h4>
-    <a href="../Verify/Index" target="_blank">图形验证码</a>
-    <h4>三、Office操作</h4>
-    <a href="../Office/Index" target="_blank">EPPlus操作Excel</a>
-    <h4>四、二维码</h4>
-    <a href="../QRCode/Index" target="_blank">生成专属二维码</a>
-    <h4>五、Json互转</h4>
-    <a href="../Home/Json" target="_blank">Json常用转换</a>
-    <h4>六、WebSoecket</h4>
-    <a href="../Home/WebSoketTest" target="_blank" title="WebSoecket案例">WebSoecket案例</a>
-    <h4>七、工具箱</h4>
-    <a href="../Tool/Index" target="_blank" title="机遇屋工具箱">机遇屋工具箱</a>
-</div>
 
+<script type="text/javascript">
+    window.onload = function () {
+        var username = getCookie("username");
+        if (username != null) {
+            $("#username").text(username);
+            $(".outlogin").show();
+        }
+        $("#InfoShow").show();
+    }
+    function outLogin() {
+        var msg = "您真的确定要退出吗？\n\n请确认！";
+        if (confirm(msg)) {
+            delCookie("username");
+            delCookie("token");
+            window.location.href = "../../Home/LoginOut";
+        }
+    }
+</script>
+
+<!-- 顶部开始 -->
+<div class="container">
+    <div class="logo"><a href="./Index">智能后台系统 v1.0</a></div>
+    <div class="left_open">
+        <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+    </div>
+    <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item to-index">
+            <a href="javascript:;" class="iconfont">&#xe6ae;</a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a href="#" onclick="colorChange('green');">绿色(默认)</a></dd>
+                <dd><a href="#" onclick="colorChange('blue');">蓝色</a></dd>
+                <dd><a href="#" onclick="colorChange('yellow');">黄色</a></dd>
+                <dd><a href="#" onclick="colorChange('black');">黑色</a></dd>
+                <dd><a href="#" onclick="colorChange('red');">红色</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item" style="display:none;" id="InfoShow">
+            <a href="javascript:;" id="username">admin</a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd><a href="javascript:;" id="outlogin" onclick="outLogin()">退出</a></dd>
+            </dl>
+        </li>
+    </ul>
+
+</div>
+<!-- 顶部结束 -->
+<!-- 中部开始 -->
+<!-- 左侧菜单开始 -->
+<div class="left-nav">
+    <div id="side-nav">
+        <ul id="nav">
+            @*<li><a href="javascript:;">
+            <i class="iconfont">&#xe726;</i>
+            <cite>权限管理</cite>
+            <i class="iconfont nav_right">&#xe697;</i>
+            </a>
+            <ul class="sub-menu">
+            <li>
+            <a _href="../PowerManager/UserList">
+            <i class="iconfont">&#xe6a7;</i>
+            <cite>用户</cite>
+            </a>
+            </li>
+            </ul>
+            <ul class="sub-menu">
+            <li>
+            <a _href="../PowerManager/RoleList">
+            <i class="iconfont">&#xe6a7;</i>
+            <cite>角色</cite>
+            </a>
+            </li>
+            </ul>
+            <ul class="sub-menu">
+            <li>
+            <a _href="../PowerManager/MenuList">
+            <i class="iconfont">&#xe6a7;</i>
+            <cite>权限</cite>
+            </a>
+            </li>
+            </ul>*@
+            @Html.Raw(ViewBag.Menu)
+        </ul>
+    </div>
+</div>
+<!-- <div class="x-slide_left"></div> -->
+<!-- 左侧菜单结束 -->
+<!-- 右侧主体开始 -->
+<div class="page-content">
+    <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+        <ul class="layui-tab-title">
+            <li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <iframe src='../layui/welcome.html' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-content-bg"></div>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+<!-- 底部开始 -->
+@*<div class="footer">
+        <div class="copyright">Copyright ©2017 x-admin 2.3 All Rights Reserved  更多模板：<a href="http://www.jiyuwu.com/" target="_blank">机遇屋</a></div>
+    </div>*@
+<!-- 底部结束 -->
