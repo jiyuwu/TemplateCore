@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewData["Title"] = "UserAddOrEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="username" class="layui-form-label">
+                <span class="x-red">*</span>登录名
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="username" name="username" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>将会成为您唯一的登入名
+            </div>
+        </div>
+        <div class="layui-form-item" id="ShowPass" style="display:none;">
+            <label for="pass" class="layui-form-label">
+                <span class="x-red">*</span>密码
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" id="pass" name="pass" required="" lay-verify="pass"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                6到16个字符
+            </div>
+        </div>
+        <div class="layui-form-item" id="ShowRePass" style="display:none;">
+            <label for="repass" class="layui-form-label">
+                <span class="x-red">*</span>确认密码
+            </label>
+            <div class="layui-input-inline">
+                <input type="password" id="repass" name="repass" required="" lay-verify="repass"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="IsTrue" class="layui-form-label">
+                <span class="x-red">*</span>是否启用
+            </label>
+            <div class="layui-input-inline">
+                <select name="IsTrue" id="IsTrue" style="height:30px;">
+                    <option value="1">是</option>
+                    @if (ViewBag.User.State == 2)
+                    {
+                        <option value="2" selected="selected">否</option>
+                    }
+                    else
+                    {
+                        <option value="2">否</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="IsTrue" class="layui-form-label">
+                <span class="x-red">*</span>角色
+            </label>
+            <div class="layui-input-inline">
+                <span class="select-box">
+                    <select name="role" class="select" id="RoleId">
+                        @{
+                            foreach (var item in ViewBag.Role)
+                            {
+                                if (ViewBag.User.RoleId == item.Id)
+                                {
+                                    <option value="@item.Id" selected="selected">@item.Role_name</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Role_name</option>
+                                }
+
+                            }
+                        }
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" lay-filter="save" lay-submit="">
+                保存
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+        $(function () {
+            $("#username").val("@Html.Raw(ViewBag.User.Account)");
+            if ("@ViewBag.User.Account" == "") {
+                $("#ShowRePass").show();
+                $("#ShowPass").show();
+            } else {
+                $("#pass").removeAttr("lay-verify");
+                $("#repass").removeAttr("lay-verify");
+            }
+
+        });
+        layui.use(['form', 'layer'], function () {
+            $ = layui.jquery;
+            var form = layui.form
+                , layer = layui.layer;
+
+            //自定义验证规则
+            form.verify({
+                nikename: function (value) {
+                    if (value.length < 5) {
+                        return '昵称至少得5个字符啊';
+                    }
+                }
+                , pass: [/(.+){6,12}$/, '密码必须6到12位']
+                , repass: function (value) {
+                    if ($('#pass').val() != $('#repass').val()) {
+                        return '两次密码不一致';
+                    }
+                }
+            });
+
+            //监听提交
+            form.on('submit(save)', function (data) {
+                $.ajax({
+                  type: "post",
+                  dataType: "json",
+                  cache: false,
+                  data: {
+                      Id:@ViewBag.Id,
+                      Account: $("#username").val(),
+                      Passwd: $("#pass").val(),
+                      State: $("#IsTrue").val(),
+                      RoleId: $("#RoleId").val()
+                  },
+                    url: "../PowerManager/UserSave",
+                  async: true,
+                  success: function (data) {
+                                    if (data.isOK) {
+                                        var index = parent.layer.getFrameIndex(window.name);
+                                        parent.location.reload(); //刷新父页面
+                                        parent.layer.close(index);
+                                    }
+                                    else {
+                                        layer.alert(data.msg);
+                                    }
+                                }
+                            });
+                return false;
+            });
+
+
+    });
+
+
+
+
+
+</script>
+

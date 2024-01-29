@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using IService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using MyFilter;
 using TemplateCore.Middleware;
 
 namespace TemplateCore
@@ -17,6 +20,21 @@ namespace TemplateCore
         
         public void ConfigureServices(IServiceCollection services)
         {
+            var serviceAsm = Assembly.Load(new AssemblyName("Service"));
+            foreach (Type serviceType in serviceAsm.GetTypes()
+            .Where(t => typeof(IServiceSupport).IsAssignableFrom(t) && !t.GetTypeInfo().IsAbstract))
+            {
+                var interfaceTypes = serviceType.GetInterfaces();
+                foreach (var interfaceType in interfaceTypes)
+                {
+                    services.AddSingleton(interfaceType, serviceType);
+                }
+            }
+            services.AddMvc(opt =>
+            {
+                opt.Filters.Add<PermissionRequiredFiler>();
+                opt.Filters.Add<MyExceptionFiler>();
+            });
             services.AddMvc();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -29,7 +47,10 @@ namespace TemplateCore
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            else
+            {
+                app.UseExceptionHandler("/Home/NoPower");
+            }
             #region websocketÖÐ¼ä¼þ
             app.UseWebSockets();
             app.UseWebSocketNotify();

@@ -1,0 +1,162 @@
+﻿
+@{
+    ViewData["Title"] = "RoleAddOrEdit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="rolename" class="layui-form-label">
+                <span class="x-red">*</span>角色名
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="rolename" name="rolename" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="IsTrue" class="layui-form-label">
+                <span class="x-red">*</span>是否启用
+            </label>
+            <div class="layui-input-inline">
+                <select name="IsTrue" id="IsTrue" style="height:30px;">
+                    <option value="1">是</option>
+                    @if (ViewBag.Role.State == 2)
+                    {
+                        <option value="2" selected="selected">否</option>
+                    }
+                    else
+                    {
+                        <option value="2">否</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">拥有权限</label>
+            <table class="layui-table layui-input-block">
+                <tbody>
+                    <tr>
+                        @Html.Raw(ViewBag.Point)
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="layui-form-item">
+            <button class="layui-btn" lay-filter="save" lay-submit="">
+                保存
+            </button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    layui.use(['form', 'layer'], function () {
+             $("#rolename").val("@Html.Raw(ViewBag.Role.Role_name)");
+            $ = layui.jquery;
+            var form = layui.form,layer = layui.layer;
+            //监听提交
+        form.on('submit(save)', function (data) {
+                var id_array=new Array();  
+                 $(".selectMenu:checked").each(function () {
+                id_array.push($(this).val());//遍历选中项的值
+                });
+                var idMenuStr = id_array.join(',');
+                $.ajax({
+                    type: "post",
+                    dataType: "json",
+                    cache: false,
+                    data: {
+                        Id:@ViewBag.Id,
+                        Role_name: $("#rolename").val(),
+                        State: $("#IsTrue").val(),
+                        MenuIds:idMenuStr
+                    },
+                    url: "../PowerManager/RoleSave",
+                    async: true,
+                    success: function (data) {
+                        if (data.isOK) {
+                            var index = parent.layer.getFrameIndex(window.name);
+                            parent.location.reload(); //刷新父页面
+                            parent.layer.close(index);
+                        }
+                        else {
+                            layer.alert(data.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+            form.render('checkbox'); //更新复选框
+    });
+
+    function selectCheckBoxes(domId) {
+        var inputs = document.getElementById(domId).getElementsByTagName("input");
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type == 'checkbox' && inputs[i].checked!=true) {
+                inputs[i].checked = true;
+            } else {
+                inputs[i].checked = false;//inputs[i].removeAttribute("checked");
+            }
+        }
+    }
+    function selectMenuBoxes(domId,parentdiv,parentmenu) {
+        var inputs = document.getElementById(domId).getElementsByTagName("input");
+        var menu1 = document.getElementById(parentmenu);
+        var menu3=document.getElementById(parentdiv).getElementsByTagName("input");
+        var b = false;
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type == 'checkbox' && inputs[i].checked!=true) {
+                inputs[i].checked = true;
+            } else {
+                inputs[i].checked = false;//inputs[i].removeAttribute("checked");
+            }
+        }
+        for (var i = 0; i < menu3.length; i++) {
+                if (menu3[i].type == 'checkbox' && menu3[i].checked == true) {
+                    b = true;
+                }
+                if(!b)
+                    menu1.checked = false;
+                else
+                    menu1.checked = true;
+            }
+    }
+
+    function selectLastBoxes(parentmenu, menu,parentdiv,menudiv) {
+        var menu1 = document.getElementById(parentmenu);
+        var menu2 = document.getElementById(menu);
+        var menu3=document.getElementById(parentdiv).getElementsByTagName("input");
+        var menu4=document.getElementById(menudiv).getElementsByTagName("input");
+        if (menu2.type == 'checkbox' && menu2.checked!=true) {
+                menu2.checked = true;
+            } else {
+                var b = false;
+            for (var i = 0; i < menu4.length; i++) {
+                if (menu4[i].type == 'checkbox' && menu4[i].checked == true) {
+                    b = true;
+                }
+                if(!b)
+                    menu2.checked = false;
+            }
+        }
+        if (menu1.type == 'checkbox' && menu1.checked!=true) {
+                menu1.checked = true;
+        } else {
+            var b = false;
+            for (var i = 0; i < menu3.length; i++) {
+                if (menu3[i].type == 'checkbox' && menu3[i].checked == true) {
+                    b = true;
+                }
+                if(!b)
+                    menu1.checked = false;
+            }
+        }
+    }
+
+
+</script>
+

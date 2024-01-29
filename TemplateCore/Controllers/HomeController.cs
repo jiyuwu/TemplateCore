@@ -3,22 +3,165 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Common;
 using DTO;
+using DTO.PowerManager;
+using IService.PowerManager;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using MyFilter;
 
 namespace TemplateCore.Controllers
 {
     public class HomeController : Controller
     {
+        public IUserService userService { get; set; }
+        public IRole_MenuService role_MenuService { get; set; }
+        public HttpCommonHelper httpCommonHelper { get; set; }
         public IConfiguration Configuration;
+        public HomeController(IUserService _userService, IRole_MenuService _role_MenuService, IHttpContextAccessor _accessor)
+        {
+            userService = _userService;
+            role_MenuService = _role_MenuService;
+            httpCommonHelper = new HttpCommonHelper(_accessor);
+        }
         public IActionResult Index()
         {
-            CommonHelper.WriteLog("Index Show");
+            string token = httpCommonHelper.GetToken();
+            var redis = new RedisHelper(1);
+            User user = redis.StringGet<User>(token);
+            List<Role_Menu> role_Menus = redis.StringGet<List<Role_Menu>>(token + "_Power");
+            if (role_Menus == null)
+            {
+                role_Menus = role_MenuService.GetMenuListByRoleId(user.RoleId);
+                #region 保存用户拥有的权限
+                var exp = new TimeSpan(2, 0, 0);//设置过期时间为2h
+                redis.StringSet(token + "_Power", role_Menus, exp);
+                #endregion
+            }
+
+            List<Role_Menu> menus = role_Menus.FindAll(e => e.Menu.ParentId == 0);
+            StringBuilder sb = new StringBuilder();
+            foreach (Role_Menu role_Menu in menus)
+            {
+                //sb.AppendFormat("<a href='javascript:;'><i class='iconfont'>&#xe726;</i><cite>{0}</cite><i class='iconfont nav_right'>&#xe697;</i></a>", role_Menu.Menu.Name);
+                //List<Role_Menu> menusUrl = role_Menus.FindAll(e => e.Menu.ParentId == role_Menu.MenuId);
+                //foreach (Role_Menu menu in menusUrl)
+                //{
+                //    sb.AppendFormat("<ul class='sub-menu'><li><a _href='{0}'><i class='iconfont'>&#xe6a7;</i><cite>{1}</cite></a></li></ul>", menu.Menu.UrlOrClass, menu.Menu.Name);
+                //}
+                sb.AppendFormat("<li><a href='javascript:;'><i class='iconfont'>&#xe6b4;</i><cite>{0}</cite><i class='iconfont nav_right'>&#xe697;</i></a>", role_Menu.Menu.Name);
+                List<Role_Menu> menusUrl = role_Menus.FindAll(e => e.Menu.ParentId == role_Menu.MenuId);
+                foreach (Role_Menu menu in menusUrl)
+                {
+                    sb.AppendFormat("<ul class='sub-menu'><li><a _href='{0}'><i class='iconfont'>&#xe6a7;</i><cite>{1}</cite></a></li></ul>", menu.Menu.UrlOrClass, menu.Menu.Name);
+                }
+                sb.Append("</li>");
+            }
+            ViewBag.Menu = sb.ToString();
             return View();
         }
+
+        #region 无权限
+        [NoPermissionRequiredAttribute]
+        public IActionResult NoPower()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 登录
+        [NoPermissionRequiredAttribute]
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [NoPermissionRequiredAttribute]
+        public async Task<IActionResult> LoginOutAsync(string token)
+        {
+            var redis = new RedisHelper(1);
+            await redis.KeyDeleteAsync(token);
+            return Redirect("Index");
+        }
+
+        [HttpPost]
+        [NoPermissionRequiredAttribute]
+        public async Task<string> ToLoginAsync()
+        {
+            IFormCollection form = HttpContext.Request.Form;
+            string code = form["Code"];
+            string uuid = form["UUID"];
+            string username = form["UserName"];
+            string password = form["Password"];
+            var redis = new RedisHelper(1);
+            string jsonResult = "[]";
+            if (redis.StringGet(uuid) == null)
+            {
+                return CommonHelper.NewGetJsonResult(-2, "验证码已过期");
+            }
+
+            if ((code.ToLower()).Equals(redis.StringGet(uuid).ToLower()))
+            {
+                User user = await userService.GetUserListByPasswordAsync(username, password);
+                if (user == null)
+                {
+                    jsonResult = CommonHelper.NewGetJsonResult(-1, "用户名或密码错误");
+                }
+                else
+                {
+                    await redis.KeyDeleteAsync(uuid);
+                    var exp = new TimeSpan(2, 0, 0);//设置过期时间为2h
+                    string token = Guid.NewGuid().ToString();
+                    List<Role_Menu> role_Menus = role_MenuService.GetMenuListByRoleId(user.RoleId);
+                    await redis.StringSetAsync(token, user, exp);
+                    await redis.StringSetAsync(token + "_Power", role_Menus, exp);
+                    jsonResult = CommonHelper.NewGetJsonResult(1, token, new { user });
+                }
+            }
+            else
+            {
+                jsonResult = CommonHelper.NewGetJsonResult(-2, "验证码错误");
+            }
+            return jsonResult;
+        }
+        #endregion
+
+        #region 验证码
+        /// <summary>
+        /// 混合验证码
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [NoPermissionRequiredAttribute]
+        public string MixVerifyCode()
+        {
+            #region 数字验证码
+            //string code = VerifyCodeHelper.GetSingleObj().CreateVerifyCode(VerifyCodeHelper.VerifyCodeType.AbcVerifyCode);
+            //var bitmap = VerifyCodeHelper.GetSingleObj().CreateBitmapByImgVerifyCode(code, 100, 40);
+            //MemoryStream stream = new MemoryStream();
+            //bitmap.Save(stream, ImageFormat.Png);
+            //return File(stream.ToArray(), "image/png");
+            #endregion
+            #region 字母验证码
+            //string code = VerifyCodeHelper.GetSingleObj().CreateVerifyCode(VerifyCodeHelper.VerifyCodeType.AbcVerifyCode);
+            //var bitmap = VerifyCodeHelper.GetSingleObj().CreateBitmapByImgVerifyCode(code, 100, 40);
+            //MemoryStream stream = new MemoryStream();
+            //bitmap.Save(stream, ImageFormat.Png);
+            //return File(stream.ToArray(), "image/png");
+            #endregion
+            string code = VerifyCodeHelper.GetSingleObj().CreateVerifyCode(VerifyCodeHelper.VerifyCodeType.MixVerifyCode);
+            var bitmap = VerifyCodeHelper.GetSingleObj().CreateBitmapByImgVerifyCode(code, 100, 40);
+            byte[] imgBt = CommonHelper.Bitmap2Byte(bitmap);
+            string uuid = Guid.NewGuid().ToString();
+            var redis = new RedisHelper(1);
+            var exp = new TimeSpan(60 * 20000000);//设置过期时间为120s
+            redis.StringSet(uuid, code, exp);
+            return CommonHelper.CodeJson(uuid, Convert.ToBase64String(imgBt));
+        }
+        #endregion
 
         public IActionResult IndexPage()
         {

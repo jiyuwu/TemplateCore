@@ -1,0 +1,160 @@
+﻿
+@{
+    ViewData["Title"] = "MenuList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="x-body">
+    <form class="layui-form">
+        <div class="layui-form-item">
+            <label for="name" class="layui-form-label">
+                <span class="x-red">*</span>菜单名
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="name" name="name" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="parentId" class="layui-form-label">
+                <span class="x-red">*</span>父类Id
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="parentId" name="parentId" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-form-mid layui-word-aux">
+                <span class="x-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="enumSgin" class="layui-form-label">
+                <span class="x-red">*</span>叶子字典
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="enumSgin" name="enumSgin" value="0"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="urlOrClass" class="layui-form-label">
+                菜单链接
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="urlOrClass" name="urlOrClass"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="Leaf" class="layui-form-label">
+                <span class="x-red">*</span>属性
+            </label>
+            <div class="layui-input-inline">
+                <select name="Leaf" id="Leaf" style="height:30px;">
+                    <option value="0">菜单</option>
+                    @if (ViewBag.Menu.IsLeaf == 1)
+                    {
+                        <option value="1" selected="selected">按钮</option>
+                    }
+                    else
+                    {
+                        <option value="1">按钮</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="DisplayOrder" class="layui-form-label">
+                <span class="x-red">*</span>排序
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="DisplayOrder" name="DisplayOrder" required="" lay-verify="required" value="0"
+                       autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="IsTrue" class="layui-form-label">
+                <span class="x-red">*</span>是否启用
+            </label>
+            <div class="layui-input-inline">
+                <select name="IsTrue" id="IsTrue" style="height:30px;">
+                    <option value="1">是</option>
+                    @if (ViewBag.Menu.State == 2)
+                    {
+                        <option value="2" selected="selected">否</option>
+                    }
+                    else
+                    {
+                        <option value="2">否</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label for="L_repass" class="layui-form-label">
+            </label>
+            <button class="layui-btn" lay-filter="save" lay-submit="">
+                保存
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+        $(function () {
+            $("#name").val("@Html.Raw(ViewBag.Menu.Name)");
+            $("#parentId").val("@ViewBag.Menu.ParentId");
+            $("#DisplayOrder").val("@ViewBag.Menu.DisplayOrder");
+            $("#urlOrClass").val("@Html.Raw(ViewBag.Menu.UrlOrClass)");
+            $("#enumSgin").val("@Html.Raw(@ViewBag.Menu.EnumSgin)");
+        });
+        layui.use(['form', 'layer'], function () {
+            $ = layui.jquery;
+            var form = layui.form
+                , layer = layui.layer;
+
+            //监听提交
+            form.on('submit(save)', function (data) {
+                $.ajax({
+                  type: "post",
+                  dataType: "json",
+                  cache: false,
+                  data: {
+                      Id:@ViewBag.Id,
+                      Name: $("#name").val(),
+                      UrlOrClass: $("#urlOrClass").val(),
+                      ParentId: $("#parentId").val(),
+                      IsLeaf: $("#Leaf").val(),
+                      DisplayOrder: $("#DisplayOrder").val(),
+                      EnumSgin: $("#enumSgin").val(),
+                      State: $("#IsTrue").val()
+                  },
+                    url: "../PowerManager/MenuSave",
+                  async: true,
+                  success: function (data) {
+                                    if (data.isOK) {
+                                        var index = parent.layer.getFrameIndex(window.name);
+                                        parent.location.reload(); //刷新父页面
+                                        parent.layer.close(index);
+                                    }
+                                    else {
+                                        layer.alert(data.msg);
+                                    }
+                                }
+                            });
+                return false;
+            });
+
+
+    });
+
+
+
+
+
+</script>
+

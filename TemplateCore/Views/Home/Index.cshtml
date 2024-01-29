@@ -1,25 +1,25 @@
 ﻿
 @{
-    ViewData["Title"] = ".NET CORE模板导航";
-    Layout = "~/Views/Share/_Layout.cshtml";
+    ViewData["Title"] = "智能管理平台";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <script type="text/javascript">
     window.onload = function () {
-        var username = getCookie("username");
-        if (username != null) {
-            $("#username").text(username);
-            $(".outlogin").show();
-        }
-        $("#InfoShow").show();
+            var username = getCookie("username");
+            if (username != null) {
+                $("#username").text(username);
+                $(".outlogin").show();
+            }
+            $("#InfoShow").show();
     }
     function outLogin() {
         var msg = "您真的确定要退出吗？\n\n请确认！";
-        if (confirm(msg)) {
-            delCookie("username");
-            delCookie("token");
-            window.location.href = "../../Home/LoginOut";
-        }
+                    if (confirm(msg)) {
+                        delCookie("username");
+                        delCookie("token");
+                        window.location.href = "../../Home/LoginOut";
+                    }
     }
 </script>
 
@@ -61,31 +61,31 @@
             <i class="iconfont">&#xe726;</i>
             <cite>权限管理</cite>
             <i class="iconfont nav_right">&#xe697;</i>
-            </a>
-            <ul class="sub-menu">
+        </a>
+        <ul class="sub-menu">
             <li>
-            <a _href="../PowerManager/UserList">
-            <i class="iconfont">&#xe6a7;</i>
-            <cite>用户</cite>
-            </a>
+                <a _href="../PowerManager/UserList">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>用户</cite>
+                </a>
             </li>
-            </ul>
-            <ul class="sub-menu">
+        </ul>
+        <ul class="sub-menu">
             <li>
-            <a _href="../PowerManager/RoleList">
-            <i class="iconfont">&#xe6a7;</i>
-            <cite>角色</cite>
-            </a>
+                <a _href="../PowerManager/RoleList">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>角色</cite>
+                </a>
             </li>
-            </ul>
-            <ul class="sub-menu">
+        </ul>
+        <ul class="sub-menu">
             <li>
-            <a _href="../PowerManager/MenuList">
-            <i class="iconfont">&#xe6a7;</i>
-            <cite>权限</cite>
-            </a>
+                <a _href="../PowerManager/MenuList">
+                    <i class="iconfont">&#xe6a7;</i>
+                    <cite>权限</cite>
+                </a>
             </li>
-            </ul>*@
+        </ul>*@
             @Html.Raw(ViewBag.Menu)
         </ul>
     </div>

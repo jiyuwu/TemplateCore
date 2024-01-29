@@ -1,0 +1,199 @@
+﻿@model List<DTO.PowerManager.Menu>
+@{
+    ViewData["Title"] = "MenuList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="x-nav">
+    <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a>
+            <cite>菜单列表</cite>
+        </a>
+    </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i>
+    </a>
+</div>
+<div class="x-body">
+    <xblock>
+        <button class="layui-btn AddData" onclick="x_admin_show('添加用户','../PowerManager/MenuAddOrEdit')"><i class="layui-icon"></i>添加</button>
+    </xblock>
+    <table id="permissionTable" class="layui-table" lay-filter="permissionTable"></table>
+</div>
+
+
+
+
+
+
+
+
+<script>
+    layui.use([ 'laydate', 'layer', 'table', 'treetable'], function () {
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#end' //指定元素
+        });
+
+        var table = layui.table;
+		var layer = layui.layer;
+		var treetable = layui.treetable;
+        // 渲染表格
+        var renderTable = function () {//树桩表格参考文档：https://gitee.com/whvse/treetable-lay
+            layer.load(3);
+            treetable.render({
+                treeColIndex: 1,//树形图标显示在第几列
+                treeSpid: 0,//最上级的父级id
+                treeIdName: 'id',//id字段的名称
+                treePidName: 'parentId',//pid字段的名称
+                treeDefaultClose: false,//是否默认折叠
+                treeLinkage: true,//父级展开时是否自动展开所有子级
+                elem: '#permissionTable',
+                url: '../../PowerManager/AllMenuList',
+                page: false,
+                cols: [[
+                    {field: 'id', title: '代号',width:'10%'},
+                    {field: 'name', title: '菜单名称',width:'20%'},
+                    { field: 'urlOrClass', title: '控制路径' },
+                    {field: 'enumSgin', title: '按钮标志'},
+                    {field: 'displayOrder', title: '排序',width:'10%'},
+                    {field: 'isLeaf', title: '类型',
+                    	templet: function(d){
+                    		if(d.isLeaf==0){
+                    			return '菜单';
+                    		}else{
+                    			return '按钮';
+                    		}
+                        },width:'10%'	
+                    },
+                    {templet: complain, title: '操作',width:'10%'}
+                ]],
+                done: function () {
+                    layer.closeAll('loading');
+                    if (@ViewBag.Del== 0) $(".DelData").hide();
+                    if (@ViewBag.Add== 0) $(".AddData").hide();
+                    if (@ViewBag.Edit== 0) $(".EditData").hide();
+                }
+            });
+        };
+
+        renderTable();
+
+    function complain(d){//操作中显示的内容
+        	if(d.urlOrClass!=null){
+        		return [
+                        '<a class="operation EditData" lay-event="edit" href="javascript:void(0)" onclick="x_admin_show(\'编辑\',\'./MenuAddOrEdit?Id='+ d.id + '\')" title="编辑">',
+            	     	'<i class="layui-icon layui-icon-edit"></i></a>',
+            	     	'<a class="operation DelData" lay-event="" href="javascript:void(0)" onclick="member_del(\''+this+','+ d.id + '\')" title="删除">',
+            	     	'<i class="layui-icon layui-icon-delete" ></i></a>',
+            	     	].join('');
+        	}else{
+        		return '';
+        	}
+        	
+        }
+        //监听工具条
+        table.on('tool(permissionTable)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+			if(data.permissionName!=null){
+				if (layEvent === 'del') {
+	                layer.msg('删除' + data.id);
+	            } else if (layEvent === 'edit') {
+	                layer.msg('修改' + data.id);
+	            }
+			}
+        });
+
+
+
+    });
+
+    /*停用*/
+    function stop(id) {
+        layer.confirm('确认要停用吗？', function (index) {
+            $.ajax({
+                type: "post", dataType: "json", url: "MenuChangeStute",
+                data: { State: "2", Id: id, Method: "edit" },
+                success: function (data) {
+                    if (data.isOK) {
+                        window.location = "MenuList";
+                    }
+                    else {
+                        console.log(data.msg);
+                    }
+
+                },
+                error: function () {
+                    //console.log("操作失败！");
+                }
+            });
+
+        });
+    }
+
+    /*启用*/
+    function use(id) {
+        layer.confirm('确认要启用吗？', function (index) {
+            $.ajax({
+                type: "post", dataType: "json", url: "MenuChangeStute",
+                data: { State: "1", Id: id, method: "edit" },
+                success: function (data) {
+                    if (data.isOK) {
+                        window.location = "MenuList";
+                    }
+                    else {
+                        console.log(data.msg);
+                    }
+
+                },
+                error: function () {
+                    //console.log("操作失败！");
+                }
+            });
+
+        });
+    }
+
+    /*用户-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            //发异步删除数据
+            //$(obj).parents("tr").remove();
+            //layer.msg('已删除!', { icon: 1, time: 1000 });
+            $.ajax({
+                type: "post", dataType: "json", url: "MenuChangeStute",
+                data: { State: "0", Id: id, method: "edit" },
+                success: function (data) {
+                    if (data.isOK) {
+                        window.location = "MenuList";
+                    }
+                    else {
+                        console.log(data.msg);
+                    }
+
+                },
+                error: function () {
+                    //console.log("操作失败！");
+                }
+            });
+        });
+    }
+
+    function sreach(pagerNum, num) {
+        var title = $("#context").val();
+        window.location = "MenuList?CurrentPage=" + pagerNum + "&NumCount=" + num + "&TitleName=" + title;
+    }
+
+    
+
+
+</script>
+
