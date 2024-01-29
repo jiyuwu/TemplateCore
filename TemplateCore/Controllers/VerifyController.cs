@@ -6,9 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common;
 using Microsoft.AspNetCore.Mvc;
+using MyFilter;
 
 namespace TemplateCore.Controllers
 {
+    [NoPermissionRequiredAttribute]
     public class VerifyController : Controller
     {
         public IActionResult Index()

@@ -10,7 +10,7 @@ namespace DTO.PowerManager
     {
         public Menu()
         {
-            this.Role_Menus = new List<Role_Menu>();
+            //this.Role_Menus = new List<Role_Menu>();
         }
 
         private long id;
@@ -99,11 +99,11 @@ namespace DTO.PowerManager
             get { return state; }
             set { state = value; }
         }
-        private List<Role_Menu> role_Menus;
-        public virtual List<Role_Menu> Role_Menus 
-        {
-            get { return role_Menus; }
-            set { role_Menus = value; }
-        }//多对多：一个菜单对应多个角色，一个角色对应多个菜单,直接写get;set;序列化会出现k_BackingField
+        //private List<Role_Menu> role_Menus;
+        //public virtual List<Role_Menu> Role_Menus 
+        //{
+        //    get { return role_Menus; }
+        //    set { role_Menus = value; }
+        //}//多对多：一个菜单对应多个角色，一个角色对应多个菜单,直接写get;set;序列化会出现k_BackingField
     }
 }

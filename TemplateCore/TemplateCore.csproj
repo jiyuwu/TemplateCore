@@ -38,7 +38,7 @@
     <None Include="Views\PowerManager\UserAddOrEdit.cshtml" />
     <None Include="Views\PowerManager\UserList.cshtml" />
     <None Include="wwwroot\Lib\xadmin\fonts\iconfont.svg" />
-    <None Include="wwwroot\Lib\xadmin\js\cookie.js" />
+    <None Include="wwwroot\Lib\xadmin\js\Cookie.js" />
     <None Include="wwwroot\Lib\xadmin\js\xadmin.js" />
     <None Include="wwwroot\Lib\xadmin\js\xcity.js" />
     <None Include="wwwroot\Lib\xadmin\lib\layui\font\iconfont.svg" />

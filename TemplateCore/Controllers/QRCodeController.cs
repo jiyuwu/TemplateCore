@@ -8,9 +8,11 @@ using System.Web;
 using Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using MyFilter;
 
 namespace TemplateCore.Controllers
 {
+    [NoPermissionRequiredAttribute]
     public class QRCodeController : Controller
     {
         private readonly IWebHostEnvironment webHostEnvironment;

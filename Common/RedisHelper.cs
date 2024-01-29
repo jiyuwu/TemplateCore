@@ -1195,17 +1195,24 @@ namespace Common
         /// <returns></returns>
         private static byte[] Serialize(object obj)
         {
-            if (obj == null)
-                return null;
-
-            var options = new JsonSerializerOptions
+            try
             {
-                WriteIndented = true // 设置为true可以让JSON格式化输出
-            };
+                if (obj == null)
+                    return null;
 
-            var jsonString = JsonSerializer.Serialize(obj, options);
-            var data = Encoding.UTF8.GetBytes(jsonString);
-            return data;
+                var options = new JsonSerializerOptions
+                {
+                    WriteIndented = true // 设置为true可以让JSON格式化输出
+                };
+
+                var jsonString = JsonSerializer.Serialize(obj, options);
+                var data = Encoding.UTF8.GetBytes(jsonString);
+                return data;
+            }
+            catch(Exception ex) {
+                return null;
+            }
+
         }
 
         /// <summary>

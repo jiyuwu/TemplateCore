@@ -162,13 +162,14 @@ namespace TemplateCore.Controllers
             return CommonHelper.CodeJson(uuid, Convert.ToBase64String(imgBt));
         }
         #endregion
-
+        [NoPermissionRequiredAttribute]
         public IActionResult IndexPage()
         {
             return View();
         }
 
         #region 配置读取 settings read
+        [NoPermissionRequiredAttribute]
         public string TestAppSettings()
         {
             string sqlString = AppSettingsHelper.Configuration.GetConnectionString("TestConnection");
@@ -180,7 +181,7 @@ namespace TemplateCore.Controllers
             string sqlString2 = Configuration["Logging:LogLevel:Default"];
             return sqlString + sqlString1 + sqlString2;
         }
-
+        [NoPermissionRequiredAttribute]
         public string TestConfig()
         {
             string ImgPath = ConfigHelper.GetSectionValue("FileMap:ImgPath");
@@ -189,6 +190,7 @@ namespace TemplateCore.Controllers
         #endregion
 
         #region json相关
+        [NoPermissionRequiredAttribute]
         public IActionResult Json()
         {
             List<Article> articleList = new List<Article>();
@@ -301,6 +303,7 @@ namespace TemplateCore.Controllers
         #endregion
 
         #region websocket案例
+        [NoPermissionRequiredAttribute]
         public IActionResult WebSoketTest()
         {
             return View();
@@ -311,6 +314,7 @@ namespace TemplateCore.Controllers
         #region 容器ip
         // GET Home/GetIp
         [HttpGet]
+        [NoPermissionRequiredAttribute]
         public ActionResult<string> GetIp()
         {
             var ip = this.Request.Headers["X-Forwarded-For"].FirstOrDefault();

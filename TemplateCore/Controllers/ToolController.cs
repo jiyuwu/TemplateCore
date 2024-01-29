@@ -1,6 +1,7 @@
 ﻿using Common;
 using DTO;
 using Microsoft.AspNetCore.Mvc;
+using MyFilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace TemplateCore.Controllers
 {
+    [NoPermissionRequiredAttribute]
     public class ToolController : Controller
     {
         public IActionResult Index()
