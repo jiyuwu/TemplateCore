@@ -7,12 +7,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Service
 {
    public class BPMDbContext: DbContext//继承自DbContext ,并重写OnConfiguring及OnModelCreating方法
     {
+        [ModuleInitializer]
+        public static void Initialize()
+        {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        }
         /// <summary>
         /// 配置连接字符串
         /// </summary>
