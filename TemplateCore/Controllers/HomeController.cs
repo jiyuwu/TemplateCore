@@ -159,7 +159,8 @@ namespace TemplateCore.Controllers
             var redis = new RedisHelper(1);
             var exp = new TimeSpan(60 * 20000000);//设置过期时间为120s
             redis.StringSet(uuid, code, exp);
-            return CommonHelper.CodeJson(uuid, Convert.ToBase64String(imgBt));
+            return CommonHelper.NewGetJsonResult(1, Convert.ToBase64String(imgBt),new { uuid, code });
+                //CommonHelper.CodeJson(uuid, Convert.ToBase64String(imgBt));
         }
         #endregion
         [NoPermissionRequiredAttribute]

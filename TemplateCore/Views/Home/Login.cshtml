@@ -80,7 +80,11 @@
                 async: false,
                 success: function (data) {
                     $("#nubImg").attr("src", "data:image/png;base64," + data.msg);
-                    $("#code").val(data.code);
+                    //$("#code").val(data.code);
+                    $("#code").val(data.data.uuid);
+                    $("#login_code").val(data.data.code);
+                    $("#entry_name").val("admin");
+                    $("#entry_password").val("admin");
                 },
                 error: function (xhr) {
                     console.log(xhr.responseText);
