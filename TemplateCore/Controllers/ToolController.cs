@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace TemplateCore.Controllers
 {
-    [NoPermissionRequiredAttribute]
+    [NoPermissionRequired]
     public class ToolController : Controller
     {
         public IActionResult Index()

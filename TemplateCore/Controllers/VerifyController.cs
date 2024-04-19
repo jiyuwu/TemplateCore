@@ -10,7 +10,7 @@ using MyFilter;
 
 namespace TemplateCore.Controllers
 {
-    [NoPermissionRequiredAttribute]
+    [NoPermissionRequired]
     public class VerifyController : Controller
     {
         public IActionResult Index()

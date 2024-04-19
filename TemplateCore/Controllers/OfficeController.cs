@@ -12,7 +12,7 @@ using MyFilter;
 
 namespace TemplateCore.Controllers
 {
-    [NoPermissionRequiredAttribute]
+    [NoPermissionRequired]
     public class OfficeController : Controller
     {
         public IActionResult Index()

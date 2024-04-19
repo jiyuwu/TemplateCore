@@ -10,9 +10,11 @@ using Common;
 using DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyFilter;
 
 namespace TemplateCore.Controllers
 {
+    [NoPermissionRequired]
     public class EditorController : Controller
     {
         #region MarkDown
