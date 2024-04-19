@@ -26,8 +26,12 @@ namespace MyFilter
             var controllerActionDescriptor = filterContext.ActionDescriptor as ControllerActionDescriptor;
             if (controllerActionDescriptor != null)
             {
-                isDefined = controllerActionDescriptor.MethodInfo.GetCustomAttributes(inherit: true)
-                  .Any(a => a.GetType().Equals(typeof(NoPermissionRequiredAttribute)));
+                bool controllerHasAttribute = controllerActionDescriptor.ControllerTypeInfo.GetCustomAttributes(inherit: true)
+                    .Any(a => a.GetType().Equals(typeof(NoPermissionRequiredAttribute)));
+
+                bool actionHasAttribute = controllerActionDescriptor.MethodInfo.GetCustomAttributes(inherit: true)
+                    .Any(a => a.GetType().Equals(typeof(NoPermissionRequiredAttribute)));
+                isDefined = controllerHasAttribute || actionHasAttribute;
             }
             if (isDefined) return;
             //1.url带token 2.header带token 3.cookie带token
