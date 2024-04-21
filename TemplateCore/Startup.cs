@@ -39,6 +39,16 @@ namespace TemplateCore
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpContextAccessor();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAnyOrigin",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                               .AllowAnyHeader()
+                               .AllowAnyMethod();
+                    });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -61,6 +71,8 @@ namespace TemplateCore
             #endregion
             app.UseStaticFiles();
             app.UseRouting();
+            // 添加全局 CORS 中间件
+            app.UseCors("AllowAnyOrigin");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
