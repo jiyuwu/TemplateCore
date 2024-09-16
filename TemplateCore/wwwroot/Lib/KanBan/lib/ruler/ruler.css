@@ -1,0 +1,88 @@
+.ui_tip_panel {
+    position: absolute;
+    z-index : 10000;
+    border: solid 1px #ff0000;
+    padding: 3px;
+    background-color: white;
+}
+
+.ui_ruler {
+    overflow: hidden;
+}
+
+.ui_ruler .ruler_panel_container {
+    position: absolute;
+    left: 18px;
+    top: 18px;
+    overflow: auto;
+}
+
+.ui_ruler .ruler_panel {
+    position: relative;
+    overflow: hidden;
+}
+
+.ui_ruler .ruler_corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border:1px solid;
+}
+
+.ui_ruler .ruler_h_container {
+    position: absolute;
+    left: 18px;
+    height: 18px;
+    overflow: hidden;
+}
+
+.ui_ruler .ruler_h {
+    position: relative;
+    height: 18px;
+    background: url("./ruler_h.png") repeat-x scroll -1px 0;
+}
+
+.ui_ruler .ruler_h_number {
+    position: absolute;
+    top: 1px;
+    cursor: default;
+    font: 10px/1 Arial, sans-serif;
+    color: #333333;
+}
+
+.ui_ruler .ruler_v_container {
+    position: absolute;
+    top: 18px;
+    width: 18px;
+    overflow: hidden;
+}
+
+.ui_ruler .ruler_v {
+    position: absolute;
+    width: 18px;
+    background: url("./ruler_v.png") repeat-y scroll 0 -1px;
+}
+
+.ui_ruler .ruler_v_number {
+    position: absolute;
+    left: 3px;
+    width: 8px;
+    word-wrap: break-word;
+    color: #333333;
+    font: 10px/1 Arial, sans-serif;
+    cursor: default;
+}
+
+.ui_ruler .ruler_drag_hline {
+    position: absolute;
+    z-index : 1000;
+    border-top: 1px solid green;
+    cursor: row-resize;
+}
+
+.ui_ruler .ruler_drag_vline {
+    position: absolute;
+    z-index : 1000;
+    border-left: 1px solid green;
+    cursor: col-resize ;
+}

@@ -1,0 +1,274 @@
+ul li {
+    display: inline;
+}
+
+.fa {
+    cursor: pointer;
+}
+
+.hoveTag {
+    position: relative;
+    z-index: 99999999999;
+    float: right;
+    margin-top: -15px;
+    cursor: pointer;
+}
+
+.form-control {
+    display: initial;
+    width: auto;
+}
+
+.handle-resize {
+    width: 100%;
+    height: 100%;
+}
+
+.handle-noresize {
+    width: 100%;
+    height: 100%;
+}
+
+.handle-title {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-width: 1080px;
+}
+
+.card {
+    height: 100%;
+}
+
+.card-body {
+    height: 100%;
+}
+
+body {
+    background: #f9fafb;
+}
+
+.tab-pane {
+    margin: 10px;
+}
+
+.nav-tabs {
+    margin: 10px;
+}
+
+.tableScroll {
+    /*overflow-y: auto;
+    overflow-x: auto;
+    height: 93%;*/
+    overflow: hidden; /* 隐藏溢出部分 */
+    height: 100%;
+    position: relative;
+}
+/* 设置表格自动滚动的动画 */
+@keyframes scrollTable {
+    0% {
+        transform: translateY(0);
+    }
+
+    100% {
+        transform: translateY(-100%);
+    }
+    /*0% {
+        top: 0;
+    }
+    100% {
+        top: -100%;
+    }*/
+}
+
+/* 启用表格自动滚动动画 */
+.tableScroll table {
+    /*animation: scrollTable 10s linear infinite;*/ /* 10秒完成一次滚动，可根据需求调整 */
+    /*    position: absolute;
+    top: 0;*/
+}
+
+.theadsticky {
+    position: sticky;
+    top: 0px;
+}
+
+.small-box .hoveTag {
+    color: green;
+}
+
+.font-color {
+    border: 1px solid #aaa;
+    min-width: 18px;
+    display: inline-block;
+    text-align: center;
+    font-size: 12px;
+    min-height: 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    margin: 7px 4px;
+    position: absolute;
+    right: 5px;
+    top: 2px;
+}
+
+.color-selector-bg {
+    position: relative;
+    display: inline-block;
+}
+
+.color-options-bg {
+    background-color: white;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    display: none;
+    z-index: 10000;
+}
+
+.color-option-bg {
+    float: left;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.before-selector-color {
+    position: relative;
+    display: inline-block;
+}
+
+.before-options-color {
+    background-color: white;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    display: none;
+    z-index: 10000;
+}
+
+.before-option-color {
+    float: left;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.ion-selector {
+    position: relative;
+    display: inline-block;
+}
+
+.ion-iframe {
+    background-color: white;
+    position: absolute;
+    top: 30px;
+    left: 0px;
+    z-index: 100000;
+    display: none;
+}
+
+.awesome-iframe {
+    background-color: white;
+    position: absolute;
+    top: 30px;
+    left: 0px;
+    z-index: 100000;
+    display: none;
+}
+
+.clickable-image {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: 150px;
+    height: 100px;
+    margin: 20px;
+}
+
+    .clickable-image:hover {
+        transform: scale(1.1);
+    }
+
+.dragdivmax {
+    height: 100%;
+    width: 100%;
+}
+
+.code-mirror-container {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f7f7f7;
+    height: 300px;
+    width: 490px;
+    display: inline-block;
+}
+
+.sys_spec_text {
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+}
+
+    .sys_spec_text li {
+        cursor: pointer;
+        padding: 10px 15px;
+    }
+
+        .sys_spec_text li:last-child {
+            border-bottom: none;
+        }
+
+        .sys_spec_text li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .sys_spec_text li.active {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            border-bottom: 1px solid #ccc;
+        }
+
+.panel-body .code-mirror-container {
+    width: 100%;
+}
+
+.form-control {
+    width: 200px;
+}
+
+#rulerOuter {
+    width: 6000px;
+    height: 3000px;
+    position: relative;
+}
+
+#rulerInner {
+    width: 5000px;
+    height: 5000px;
+}
+
+.modal-dialog {
+    width: 670px;
+}
+
+.modal-body {
+    padding-top: 0px;
+}
+
+.CodeMirror {
+    height: 500px;
+}
+.gridster .preview-holder {
+    border: none !important;
+    border-radius: 0 !important;
+    background: red !important;
+}
+
+.form-group div {
+    margin-bottom: 2px;
+}
+
+.form-group input {
+    margin-bottom: 2px;
+}
