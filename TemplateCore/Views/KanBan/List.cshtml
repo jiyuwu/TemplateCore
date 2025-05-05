@@ -1,0 +1,120 @@
+﻿@model List<DTO.KanBan.KBInfo>
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Views/Share/_Layout.cshtml";
+}
+
+<div class="x-nav">
+    <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a>
+            <cite>看板列表</cite>
+        </a>
+    </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i>
+    </a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+        <div class="layui-form layui-col-md12 x-so">
+            <input id="context" type="text" name="context" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            <button onclick="sreach('@ViewBag.PageModel.CurrentPage','@ViewBag.PageModel.NumCount')" class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </div>
+    </div>
+    <xblock>
+        <button class="layui-btn AddData" onclick="x_admin_show('添加看板','../KanBan/AddOrEdit')"><i class="layui-icon"></i>添加</button>
+        <span class="x-right" style="line-height:40px">共有数据： @ViewBag.AllCount 条</span>
+    </xblock>
+    <table class="layui-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>标题</th>
+                <th>加入时间</th>
+                <th>外链</th>
+                <th>操作</th>
+        </thead>
+        <tbody>
+            @{
+                for (int x = 0; x < Model.Count; x++)
+                {
+                    <tr>
+                        <td>@Model[x].Id</td>
+                        <td>@Model[x].Title</td>
+                        <td>@Model[x].Createdate</td>
+                        <td class="td-status">
+                            @if (string.IsNullOrEmpty(Model[x].Viewlink))
+                            {
+                                <span></span>
+                            }
+                            else
+                            {
+                                <a href="@Model[x].Viewlink" target="_blank">预览</a>
+                            }
+                        </td>
+                        <td class="td-manage">
+                            <a title="编辑" onclick="x_admin_show('编辑','./AddOrEdit?Id=@Model[x].Id')" href="javascript:;" class="EditData">
+                                <i class="layui-icon">&#xe642;</i>
+                            </a>
+                            <a title="删除" onclick="member_del(this,'@Model[x].Id')" href="javascript:;" class="DelData">
+                                <i class="layui-icon">&#xe640;</i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+    <div class='page'>
+        <div>@Html.Raw(ViewBag.Page)</div>
+    </div>
+</div>
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        if (@ViewBag.Del== 0) $(".DelData").hide();
+        if (@ViewBag.Add== 0) $(".AddData").hide();
+        if (@ViewBag.Edit== 0) $(".EditData").hide();
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#end' //指定元素
+        });
+    });
+
+    /*用户-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            //发异步删除数据
+            //$(obj).parents("tr").remove();
+            //layer.msg('已删除!', { icon: 1, time: 1000 });
+            $.ajax({
+                type: "post", dataType: "json", url: "KanBanDelete",
+                data: { State: "0", Id: id, method: "edit" },
+                success: function (data) {
+                    if (data.isOK) {
+                        window.location = "RoleList";
+                    }
+                    else {
+                        console.log(data.msg);
+                    }
+
+                },
+                error: function () {
+                    //console.log("操作失败！");
+                }
+            });
+        });
+    }
+
+    function sreach(pagerNum, num) {
+        var title = $("#context").val();
+        window.location = "List?CurrentPage=" + pagerNum + "&NumCount=" + num + "&TitleName=" + title;
+    }
+</script>

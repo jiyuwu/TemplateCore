@@ -366,7 +366,7 @@ var dragDivChange = {
                 dragtableTitle: "表格展示",
                 dragtableTitleFont: "font-size:15px;color:rgb(51, 51, 51);display:block;text-align:left;",
                 dragtableTitleBefore: "card-header-before-blue",
-                dragtableSql: `select IsRead 已读,SentDate 时间 from Push_Record union all select 12, '2022-01-01' union all select 13,'2023-01-01' `,
+                dragtableSql: `select 120 已读,SentDate 时间 from Push_Record union all select 12, '2022-01-01' union all select 13,'2023-01-01' `,
                 dragtableTime: 10,
                 dragCardColor: "#FFFFFF",
                 dragtableType: "table table-condensed",

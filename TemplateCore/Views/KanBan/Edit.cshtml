@@ -1,0 +1,1119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>数据看板</title>
+    <link href="~/Lib/KanBan/lib/codemirror/lib/codemirror.css" rel="stylesheet" />
+    <link href="~/Lib/KanBan/lib/codemirror/theme/idea.css" rel="stylesheet">
+    <link href="~/Lib/KanBan/lib/codemirror/addon/hint/show-hint.css" rel="stylesheet">
+    <link href="~/Lib/KanBan/lib/codemirror/addon/fold/foldgutter.css" rel="stylesheet">
+    <script src="~/Lib/KanBan/lib/codemirror/lib/codemirror.js"></script>
+    <script src="~/Lib/KanBan/lib/codemirror/mode/sql/sql.js"></script>
+    <script src="~/Lib/KanBan/lib/codemirror/addon/comment/comment.js"></script>
+    <script src="~/Lib/KanBan/lib/codemirror/addon/hint/show-hint.js"></script>
+    <script src="~/Lib/KanBan/lib/codemirror/addon/hint/sql-hint.js"></script>
+    <script src="~/Lib/KanBan/lib/codemirror/addon/comment/comment.js"></script>
+    <script src="~/Lib/KanBan/lib/codemirror/addon/edit/matchbrackets.js"></script>
+    <script src="~/Lib/KanBan/lib/codemirror/addon/selection/active-line.js"></script>
+    <!--jscssstart-->
+    <script src="~/Lib/KanBan/js/jquery.min.js"></script>
+    <script src="~/Lib/KanBan/lib/ruler/jquery.event.drag-2.2.js"></script>
+    <script src="~/Lib/KanBan/lib/ruler/jquery.event.drop-2.2.js"></script>
+    <script src="~/Lib/KanBan/lib/ruler/ruler.js"></script>
+    <link href="~/Lib/KanBan/lib/ruler/ruler.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Lib/KanBan/css/jquery.gridster.min.css" />
+    <link rel="stylesheet" href="~/Lib/KanBan/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Lib/KanBan/css/font/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/Lib/KanBan/css/dragdiv.css" />
+    <link rel="stylesheet" href="~/Lib/KanBan/css/card.css" />
+    <link rel="stylesheet" href="~/Lib/KanBan/css/Ionicons/css/ionicons.min.css" />
+    <link rel="stylesheet" href="~/Lib/KanBan/css/style.css" />
+    <link href="~/Lib/KanBan/plugin/colorpicker/jquery.bigcolorpicker.css" rel="stylesheet" />
+    <script src="~/Lib/KanBan/js/jquery.gridster.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="~/Lib/KanBan/js/echarts.min.js"></script>
+    <script src="~/Lib/KanBan/js/bootstrap.min.js"></script>
+    <script src="~/Lib/KanBan/js/dragdiv.js"></script>
+    <script src="~/Lib/KanBan/plugin/colorpicker/jquery.bigcolorpicker.min.js"></script>
+    <!--jscssend-->
+</head>
+
+<body id="dragBody" style="background: rgb(249, 250, 251);">
+    <button class="btn btn-default" style="float:right;margin:5px;" onclick="dragOutPutHtml.saveData();">保存</button>
+    <button class="btn btn-default" style="float:right;margin:5px;" onclick="dragOutPutHtml.reData();">刷新</button>
+    <ul class=" nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab"> 指标统计</a></li>
+        <li><a href="#tab2" data-toggle="tab"> 表格</a></li>
+        <li><a href="#tab3" data-toggle="tab"> 快捷链接</a></li>
+        <li><a href="#tab4" data-toggle="tab"> 仪表盘</a></li>
+        <li><a href="#tab5" data-toggle="tab"> 饼图</a></li>
+        <li><a href="#tab6" data-toggle="tab"> 柱状图</a></li>
+        <li><a href="#tab7" data-toggle="tab"> 折线图</a></li>
+        <li><a href="#tab8" data-toggle="tab"> 更多</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab1">
+            <img class="clickable-image" src="~/Lib/KanBan/css/Images/drag/dragcardlabel.png" onclick="dragDivChange.addDiv('dragcardlabel')" />
+            <img class="clickable-image" src="~/Lib/KanBan/css/Images/drag/dragonelabel.png" onclick="dragDivChange.addDiv('dragonelabel')" />
+            <!-- <button class="btn btn-default" onclick="dragDivChange.addDiv('draglabel')">多指标统计</button> -->
+        </div>
+        <div class="tab-pane fade" id="tab2">
+            <img class="clickable-image" src="~/Lib/KanBan/css/Images/drag/dragtable.png" onclick="dragDivChange.addDiv('dragtable')" />
+        </div>
+        <div class="tab-pane" id="tab3">
+            <img class="clickable-image" src="~/Lib/KanBan/css/Images/drag/dragcardlink.png" onclick="dragDivChange.addDiv('dragcardlink')" />
+            <img class="clickable-image" src="~/Lib/KanBan/css/Images/drag/draglink.png" onclick="dragDivChange.addDiv('draglink')" />
+        </div>
+        <div class="tab-pane" id="tab4">
+            <img class="clickable-image" src="~/Lib/KanBan/css/Images/drag/draggaugepic.png" onclick="dragDivChange.addDiv('draggaugepic')" />
+        </div>
+        <div class="tab-pane" id="tab5">
+            <img class="clickable-image" src="~/Lib/KanBan/css/Images/drag/dragpiepic.png" onclick="dragDivChange.addDiv('dragpiepic')" />
+        </div>
+        <div class="tab-pane" id="tab6">
+            <img class="clickable-image" src="~/Lib/KanBan/css/Images/drag/dragbarpic.png" onclick="dragDivChange.addDiv('dragbarpic')" />
+        </div>
+        <div class="tab-pane" id="tab7">
+            <img class="clickable-image" src="~/Lib/KanBan/css/Images/drag/draglinepic.png" onclick="dragDivChange.addDiv('draglinepic')" />
+        </div>
+        <div class="tab-pane" id="tab8">
+            <button class="btn btn-default" onclick="dragOutPutHtml.modelDiv()">生成模板页</button>
+            <button class="btn btn-default" onclick="dragOutPutHtml.showDiv(true)">生成展示页</button>
+            <button class="btn btn-default" onclick="dragDivChange.addDiv('draghidediv')">间隔块</button>
+        </div>
+    </div>
+
+
+    <!-- 模态框 -->
+    <div class="modal fade"
+         id="draglabelSet"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="draglabelSetLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="draglabelSetLabel">编辑统计指标</h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDraglabelId" />
+                        <div class="form-group">
+                            <label for="inputDraglabelTitle">标题</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputDraglabelTitle"
+                                   placeholder="标题" />
+                            <label for="inputDraglabelTitleFont">标题样式</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputDraglabelTitleFont"
+                                   placeholder="标题样式" />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDraglabelCTitleFont">样式</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputDraglabelCTitleFont"
+                                   placeholder="副标题样式" />
+                            <label for="inputDraglabelCCountFont">数量样式</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputDraglabelCCountFont"
+                                   placeholder="数量样式" />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDraglabelCLinkFont">链接</label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="inputDraglabelCLinkFont"
+                                   placeholder="链接样式" />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDraglabelSql">sql</label>
+                            <textarea style="width: 80%;" id="inputDraglabelSql" placeholder="sql语句" class="form-control" rows="5"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
+                        关闭
+                    </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDraglabelId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade"
+         id="dragtitleSet"
+         tabindex="-1"
+         role="dialog"
+         aria-labelledby="dragtitleSetLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑标题</h5>
+                    <button type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputtitleId" />
+                        <div class="form-group">
+                            <label for="inputTitle">看板标题</label>
+                            <input type="text" class="form-control" id="inputTitle" placeholder="看板标题" />
+                            <label for="inputTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputTitleSize" placeholder="标题大小" /><br />
+                            <label for="inputTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputTitlePadding">边框大小</label>
+                            <input type="text" class="form-control" id="inputTitlePadding" placeholder="边框大小" /><br />
+                            <label for="inputTitleAlign">标题位置</label>
+                            <select type="text" class="form-control" id="inputTitleAlign" placeholder="标题位置">
+                                <option value="left">左</option>
+                                <option value="center">中</option>
+                                <option value="right">右</option>
+                            </select>
+                            <label for="inputTitleDisplay">是否隐藏</label>
+                            <select type="text" class="form-control" id="inputTitleDisplay" placeholder="是否隐藏">
+                                <option value="none">是</option>
+                                <option value="block">否</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputBodyBG">画布背景</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputBodyBG" placeholder="画布背景">
+                                <span class="font-color colorSelect" style="background: rgb(249, 250, 251);">&nbsp;</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-dismiss="modal">
+                        关闭
+                    </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputtitleId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dragonelabelSet" tabindex="-1" role="dialog" aria-labelledby="dragonelabelSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑单个统计指标</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDragonelabelId" />
+                        <div class="form-group">
+                            <label for="inputDragonelabelImage">图片选择</label>
+                            <div class="ion-selector">
+                                <input onclick="dragSelector.ionimgSelectShow(this);" type="text" class="form-control input-img-ion" id="inputDragonelabelImage" placeholder="图片" />
+                                <iframe data-attribute="inputDragonelabelImage,iframeDragonelabelImage" id="iframeDragonelabelImage" class="ion-iframe" src="~/Lib/KanBan/css/Ionicons/ion.html" width="200" height="300"></iframe>
+                            </div>
+                            <label for="inputDragonelabelBG">背景颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" onclick="dragSelector.bgSelectShow(this);" class="form-control input-color-bg" id="inputDragonelabelBG" placeholder="背景颜色">
+                                <div class="color-options-bg">
+                                </div>
+                            </div><br />
+                            <label for="inputDragonelabelImageSize">图片大小</label>
+                            <input type="text" class="form-control" id="inputDragonelabelImageSize" placeholder="图片大小">
+                            <label for="inputDragonelabelImageColor">图片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragonelabelImageColor" placeholder="图片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragonelabelTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputDragonelabelTitleSize" placeholder="标题大小" />
+                            <label for="inputDragonelabelTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragonelabelTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDragonelabelCountSize">数量大小</label>
+                            <input type="text" class="form-control" id="inputDragonelabelCountSize" placeholder="数量大小" />
+                            <label for="inputDragonelabelCountColor">数量颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragonelabelCountColor" placeholder="数量颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragonelabelLinkTitle">链接名称</label>
+                            <input type="text" class="form-control" id="inputDragonelabelLinkTitle" placeholder="链接名称" />
+                            <label for="inputDragonelabelLink">链接地址</label>
+                            <input type="text" class="form-control" id="inputDragonelabelLink" placeholder="链接地址" />
+                            <label for="inputDragonelabelLinkSize">链接大小</label>
+                            <input type="text" class="form-control" id="inputDragonelabelLinkSize" placeholder="链接大小" />
+                            <label for="inputDragonelabelLinkColor">字体颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragonelabelLinkColor" placeholder="字体颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDragonelabelLinkDisplay">是否隐藏</label>
+                            <select id="inputDragonelabelLinkDisplay" class="form-control">
+                                <option value="none">是</option>
+                                <option value="block">否</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    查询语句
+                                </div>
+                                <div class="panel-body">
+                                    <div class="code-mirror-container">
+                                        <textarea id="inputDragonelabelSql"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="inputDragonelabelTime">时间间隔</label>
+                            <input type="text" class="form-control" id="inputDragonelabelTime" placeholder="每隔几分钟更新一次" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDragonelabelId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dragcardlabelSet" tabindex="-1" role="dialog" aria-labelledby="dragcardlabelSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑统计指标</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDragcardlabelId" />
+                        <div class="form-group">
+                            <label for="inputDragcardlabelCardColor">卡片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragcardlabelCardColor" placeholder="卡片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragcardlabelImage">图片选择</label>
+                            <div class="ion-selector">
+                                <input onclick="dragSelector.ionimgSelectShow(this);" type="text" class="form-control input-img-ion" id="inputDragcardlabelImage" placeholder="图片" />
+                                <iframe data-attribute="inputDragcardlabelImage,iframeDragcardlabelImage" id="iframeDragcardlabelImage" class="ion-iframe" src="~/Lib/KanBan/css/Ionicons/ion.html" width="200" height="300"></iframe>
+                            </div>
+                            <label for="inputDragcardlabelBG">图片背景</label>
+                            <div class="color-selector-bg">
+                                <input type="text" onclick="dragSelector.bgSelectShow(this);" class="form-control input-color-bg" id="inputDragcardlabelBG" placeholder="图片背景">
+                                <div class="color-options-bg">
+                                </div>
+                            </div><br />
+                            <label for="inputDragcardlabelImageSize">图片大小</label>
+                            <input type="text" class="form-control" id="inputDragcardlabelImageSize" placeholder="图片大小">
+                            <label for="inputDragcardlabelImageColor">图片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragcardlabelImageColor" placeholder="图片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragcardlabelTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputDragcardlabelTitleSize" placeholder="标题大小" />
+                            <label for="inputDragcardlabelTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragcardlabelTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDragcardlabelCountSize">数量大小</label>
+                            <input type="text" class="form-control" id="inputDragcardlabelCountSize" placeholder="数量大小" />
+                            <label for="inputDragcardlabelCountColor">数量颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragcardlabelCountColor" placeholder="数量颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragcardlabelTitle2Size">副标题大小</label>
+                            <input type="text" class="form-control" id="inputDragcardlabelTitle2Size" placeholder="副标题大小" />
+                            <label for="inputDragcardlabelTitle2Color">副标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragcardlabelTitle2Color" placeholder="副标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDragcardlabelCount2Size">副数量大小</label>
+                            <input type="text" class="form-control" id="inputDragcardlabelCount2Size" placeholder="副数量大小" />
+                            <label for="inputDragcardlabelCount2Color">副数量颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragcardlabelCount2Color" placeholder="副数量颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    查询语句
+                                </div>
+                                <div class="panel-body">
+                                    <div class="code-mirror-container">
+                                        <textarea id="inputDragcardlabelSql"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="inputDragcardlabelTime">时间间隔</label>
+                            <input type="text" class="form-control" id="inputDragcardlabelTime" placeholder="每隔几分钟更新一次" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDragcardlabelId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dragtableSet" tabindex="-1" role="dialog" aria-labelledby="dragtableSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑表格</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="inputDragtableCardColor">卡片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragtableCardColor" placeholder="卡片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDragtableType">表格种类</label>
+                            <select type="text" class="form-control" id="inputDragtableType" placeholder="表格种类">
+                                <option value="table">默认</option>
+                                <option value="table table-striped">条纹</option>
+                                <option value="table table-bordered">边框</option>
+                                <option value="table table-hover">悬停</option>
+                                <option value="table table-condensed">精简</option>
+                            </select>
+                            <input type="hidden" id="inputDragtableId" />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragtableTitle">表格标题</label>
+                            <input type="text" class="form-control" id="inputDragtableTitle" placeholder="表格标题" />
+                            <label for="inputDragtableTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputDragtableTitleSize" placeholder="标题大小" /><br />
+                            <label for="inputDragtableTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragtableTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDragtableTitleAlign">标题位置</label>
+                            <select type="text" class="form-control" id="inputDragtableTitleAlign" placeholder="标题位置">
+                                <option value="left">左</option>
+                                <option value="center">中</option>
+                                <option value="right">右</option>
+                            </select>
+                            <label for="inputDragtableTitleDisplay">是否隐藏</label>
+                            <select type="text" class="form-control" id="inputDragtableTitleDisplay" placeholder="是否隐藏">
+                                <option value="none">是</option>
+                                <option value="block">否</option>
+                            </select>
+                            <label for="inputDragtableTitleBefore">前缀颜色</label>
+                            <div class="before-selector-color">
+                                <input type="text" onclick="dragSelector.beforeSelectShow(this);" class="form-control" id="inputDragtableTitleBefore" placeholder="前缀颜色">
+                                <div class="before-options-color">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragtableLinkName">链接名称</label>
+                            <input type="text" class="form-control" id="inputDragtableLinkName" placeholder="链接名称" />
+                            <label for="inputDragtableLinkPath">链接地址</label>
+                            <input type="text" class="form-control" id="inputDragtableLinkPath" placeholder="链接地址" />
+                            <label for="inputDragtableLinkSize">链接大小</label>
+                            <input type="text" class="form-control" id="inputDragtableLinkSize" placeholder="链接大小" />
+                            <label for="inputDragtableLinkColor">链接颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control" id="inputDragtableLinkColor" placeholder="链接颜色" />
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDragtableLinkFloat">链接位置</label>
+                            <select type="text" class="form-control" id="inputDragtableLinkFloat" placeholder="链接位置">
+                                <option value="right">右</option>
+                                <option value="left">左</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragtableTheadSize">表头大小</label>
+                            <input type="text" class="form-control" id="inputDragtableTheadSize" placeholder="表头大小" />
+                            <label for="inputDragtableTheadColor">表头颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control" id="inputDragtableTheadColor" placeholder="表头颜色" />
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDragtableTheadPadding">表头边距</label>
+                            <input type="text" class="form-control" id="inputDragtableTheadPadding" placeholder="表头边距" />
+                            <label for="inputDragtableTheadAlign">表头位置</label>
+                            <select type="text" class="form-control" id="inputDragtableTheadAlign" placeholder="表头位置">
+                                <option value="left">居左</option>
+                                <option value="center">居中</option>
+                                <option value="right">居右</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragtableTbodySize">表体大小</label>
+                            <input type="text" class="form-control" id="inputDragtableTbodySize" placeholder="表体大小" />
+                            <label for="inputDragtableTbodyColor">表体颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control" id="inputDragtableTbodyColor" placeholder="表体颜色" />
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDragtableTbodyPadding">表体边距</label>
+                            <input type="text" class="form-control" id="inputDragtableTbodyPadding" placeholder="表体边距" />
+                            <label for="inputDragtableTbodyAlign">表体位置</label>
+                            <select type="text" class="form-control" id="inputDragtableTbodyAlign" placeholder="表体位置">
+                                <option value="left">居左</option>
+                                <option value="center">居中</option>
+                                <option value="right">居右</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    查询语句
+                                </div>
+                                <div class="panel-body">
+                                    <div class="code-mirror-container">
+                                        <textarea id="inputDragtableSql"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="inputDragtableTime">时间间隔</label>
+                            <input type="text" class="form-control" id="inputDragtableTime" placeholder="每隔几分钟更新一次" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDragtableId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="draglinkSet" tabindex="-1" role="dialog" aria-labelledby="draglinkSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑链接</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDraglinkId" />
+                        <div class="form-group">
+                            <label for="inputDraglinkImage">图片</label>
+                            <div class="ion-selector">
+                                <input onclick="dragSelector.ionimgSelectShow(this);" type="text" class="form-control input-img-ion" id="inputDraglinkImage" placeholder="图片" />
+                                <iframe data-attribute="inputDraglinkImage,iframeDraglinkImage" id="iframeDraglinkImage" class="ion-iframe" src="~/Lib/KanBan/css/Ionicons/ion.html" width="200" height="300"></iframe>
+                            </div>
+                            <label for="inputDraglinkBG">背景颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" onclick="dragSelector.bgSelectShow(this);" class="form-control input-color-bg" id="inputDraglinkBG" placeholder="背景颜色">
+                                <div class="color-options-bg">
+                                </div>
+                            </div><br />
+                            <label for="inputDraglinkImageSize">图片大小</label>
+                            <input type="text" class="form-control" id="inputDraglinkImageSize" placeholder="图片大小">
+                            <label for="inputDraglinkImageColor">图片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDraglinkImageColor" placeholder="图片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDraglinkTitle">链接标题</label>
+                            <input type="text" class="form-control" id="inputDraglinkTitle" placeholder="链接标题" />
+                            <label for="inputDraglinkTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputDraglinkTitleSize" placeholder="标题大小" />
+                            <label for="inputDraglinkTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDraglinkTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDraglinkLabel">链接别名</label>
+                            <input type="text" class="form-control" id="inputDraglinkLabel" placeholder="链接别名" />
+                            <label for="inputDraglink">链接地址</label>
+                            <input type="text" class="form-control" id="inputDraglink" placeholder="链接地址" />
+                            <label for="inputDraglinkSize">链接大小</label>
+                            <input type="text" class="form-control" id="inputDraglinkSize" placeholder="链接大小" />
+                            <label for="inputDraglinkColor">字体颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDraglinkColor" placeholder="链接颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDraglinkId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dragcardlinkSet" tabindex="-1" role="dialog" aria-labelledby="dragcardlinkSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑链接</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDragcardlinkId" />
+                        <div class="form-group">
+                            <label for="inputDragcardlinkCardColor">卡片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragcardlinkCardColor" placeholder="卡片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragcardlinkImage">链接图片</label>
+                            <div class="ion-selector">
+                                <input onclick="dragSelector.awesomeimgSelectShow(this);" type="text" class="form-control input-img-ion" id="inputDragcardlinkImage" placeholder="链接图片" />
+                                <iframe data-attribute="inputDragcardlinkImage,iframeDragcardlinkImage" id="iframeDragcardlinkImage" class="awesome-iframe" src="~/Lib/KanBan/css/font/awesome.html" width="200" height="300"></iframe>
+                            </div>
+                            <label for="inputDragcardlinkImageSize">图片大小</label>
+                            <input type="text" class="form-control" id="inputDragcardlinkImageSize" placeholder="图片大小" /><br />
+                            <label for="inputDragcardlinkImageColor">图片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragcardlinkImageColor" placeholder="图片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDragcardlinkImageDisplay">是否隐藏</label>
+                            <select type="text" class="form-control" id="inputDragcardlinkImageDisplay" placeholder="是否隐藏">
+                                <option value="none">是</option>
+                                <option value="block">否</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragcardlinkTitle">链接标题</label>
+                            <input type="text" class="form-control" id="inputDragcardlinkTitle" placeholder="链接标题" />
+                            <label for="inputDragcardlink">链接地址</label>
+                            <input type="text" class="form-control" id="inputDragcardlink" placeholder="链接地址" />
+                            <label for="inputDragcardlinkTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputDragcardlinkTitleSize" placeholder="标题大小" />
+                            <label for="inputDragcardlinkTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragcardlinkTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDragcardlinkId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="draggaugeSet" tabindex="-1" role="dialog" aria-labelledby="draggaugeSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑仪表盘图</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDraggaugeId" />
+                        <div class="form-group">
+                            <label for="inputDraggaugeCardColor">卡片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDraggaugeCardColor" placeholder="卡片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDraggaugeFontSize">图文大小</label>
+                            <input type="text" class="form-control" id="inputDraggaugeFontSize" placeholder="图形文字大小" />
+                            <!--<label for="inputDraggaugeColors">颜色设置</label>
+                                <div class="color-selector-bg">
+                                    <input type="text" class="form-control cardColor" id="inputDraggaugeColors" placeholder="颜色设置">
+                                    <span class="font-color colorsSelect" style="background: #ffffff;">&nbsp;</span>
+                                </div>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDraggaugeTitle">表格标题</label>
+                            <input type="text" class="form-control" id="inputDraggaugeTitle" placeholder="表格标题" />
+                            <label for="inputDraggaugeTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputDraggaugeTitleSize" placeholder="标题大小" /><br />
+                            <label for="inputDraggaugeTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDraggaugeTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDraggaugeTitleAlign">标题位置</label>
+                            <select type="text" class="form-control" id="inputDraggaugeTitleAlign" placeholder="标题位置">
+                                <option value="left">左</option>
+                                <option value="center">中</option>
+                                <option value="right">右</option>
+                            </select>
+                            <label for="inputDraggaugeTitleDisplay">是否隐藏</label>
+                            <select type="text" class="form-control" id="inputDraggaugeTitleDisplay" placeholder="是否隐藏">
+                                <option value="none">是</option>
+                                <option value="block">否</option>
+                            </select>
+                            <label for="inputDraggaugeTitleBefore">前缀颜色</label>
+                            <div class="before-selector-color">
+                                <input type="text" onclick="dragSelector.beforeSelectShow(this);" class="form-control" id="inputDraggaugeTitleBefore" placeholder="前缀颜色">
+                                <div class="before-options-color">
+                                </div>
+                            </div><br />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDraggaugeLinkName">链接名称</label>
+                            <input type="text" class="form-control" id="inputDraggaugeLinkName" placeholder="链接名称" />
+                            <label for="inputDraggaugeLinkPath">链接地址</label>
+                            <input type="text" class="form-control" id="inputDraggaugeLinkPath" placeholder="链接地址" />
+                            <label for="inputDraggaugeLinkSize">链接大小</label>
+                            <input type="text" class="form-control" id="inputDraggaugeLinkSize" placeholder="链接大小" />
+                            <label for="inputDraggaugeLinkColor">链接颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control" id="inputDraggaugeLinkColor" placeholder="链接颜色" />
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDraggaugeLinkFloat">链接位置</label>
+                            <select type="text" class="form-control" id="inputDraggaugeLinkFloat" placeholder="链接位置">
+                                <option value="right">右</option>
+                                <option value="left">左</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    查询语句
+                                </div>
+                                <div class="panel-body">
+                                    <div class="code-mirror-container">
+                                        <textarea id="inputDraggaugeSql"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="inputDraggaugeTime">时间间隔</label>
+                            <input type="text" class="form-control" id="inputDraggaugeTime" placeholder="每隔几分钟更新一次" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDraggaugeId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dragpieSet" tabindex="-1" role="dialog" aria-labelledby="dragpieSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑饼图</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDragpieId" />
+                        <div class="form-group">
+                            <label for="inputDragpieCardColor">卡片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragpieCardColor" placeholder="卡片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDragpieFontSize">图文大小</label>
+                            <input type="text" class="form-control" id="inputDragpieFontSize" placeholder="图形文字大小" />
+                            <!--<label for="inputDragpieColors">颜色设置</label>
+                                <div class="color-selector-bg">
+                                    <input type="text" class="form-control cardColor" id="inputDragpieColors" placeholder="颜色设置">
+                                    <span class="font-color colorsSelect" style="background: #ffffff;">&nbsp;</span>
+                                </div>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragpieTitle">表格标题</label>
+                            <input type="text" class="form-control" id="inputDragpieTitle" placeholder="表格标题" />
+                            <label for="inputDragpieTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputDragpieTitleSize" placeholder="标题大小" /><br />
+                            <label for="inputDragpieTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragpieTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDragpieTitleAlign">标题位置</label>
+                            <select type="text" class="form-control" id="inputDragpieTitleAlign" placeholder="标题位置">
+                                <option value="left">左</option>
+                                <option value="center">中</option>
+                                <option value="right">右</option>
+                            </select>
+                            <label for="inputDragpieTitleDisplay">是否隐藏</label>
+                            <select type="text" class="form-control" id="inputDragpieTitleDisplay" placeholder="是否隐藏">
+                                <option value="none">是</option>
+                                <option value="block">否</option>
+                            </select>
+                            <label for="inputDragpieTitleBefore">前缀颜色</label>
+                            <div class="before-selector-color">
+                                <input type="text" onclick="dragSelector.beforeSelectShow(this);" class="form-control" id="inputDragpieTitleBefore" placeholder="前缀颜色">
+                                <div class="before-options-color">
+                                </div>
+                            </div><br />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragpieLinkName">链接名称</label>
+                            <input type="text" class="form-control" id="inputDragpieLinkName" placeholder="链接名称" />
+                            <label for="inputDragpieLinkPath">链接地址</label>
+                            <input type="text" class="form-control" id="inputDragpieLinkPath" placeholder="链接地址" />
+                            <label for="inputDragpieLinkSize">链接大小</label>
+                            <input type="text" class="form-control" id="inputDragpieLinkSize" placeholder="链接大小" />
+                            <label for="inputDragpieLinkColor">链接颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control" id="inputDragpieLinkColor" placeholder="链接颜色" />
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDragpieLinkFloat">链接位置</label>
+                            <select type="text" class="form-control" id="inputDragpieLinkFloat" placeholder="链接位置">
+                                <option value="right">右</option>
+                                <option value="left">左</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    查询语句
+                                </div>
+                                <div class="panel-body">
+                                    <div class="code-mirror-container">
+                                        <textarea id="inputDragpieSql"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="inputDragpieTime">时间间隔</label>
+                            <input type="text" class="form-control" id="inputDragpieTime" placeholder="每隔几分钟更新一次" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDragpieId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dragbarSet" tabindex="-1" role="dialog" aria-labelledby="dragbarSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑柱状图</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDragbarId" />
+                        <div class="form-group">
+                            <label for="inputDragbarCardColor">卡片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragbarCardColor" placeholder="卡片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDragbarFontSize">图文大小</label>
+                            <input type="text" class="form-control" id="inputDragbarFontSize" placeholder="图形文字大小" />
+                            <!--<label for="inputDragbarColors">颜色设置</label>
+                                <div class="color-selector-bg">
+                                    <input type="text" class="form-control cardColor" id="inputDragbarColors" placeholder="颜色设置">
+                                    <span class="font-color colorsSelect" style="background: #ffffff;">&nbsp;</span>
+                                </div>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragbarTitle">表格标题</label>
+                            <input type="text" class="form-control" id="inputDragbarTitle" placeholder="表格标题" />
+                            <label for="inputDragbarTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputDragbarTitleSize" placeholder="标题大小" /><br />
+                            <label for="inputDragbarTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDragbarTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDragbarTitleAlign">标题位置</label>
+                            <select type="text" class="form-control" id="inputDragbarTitleAlign" placeholder="标题位置">
+                                <option value="left">左</option>
+                                <option value="center">中</option>
+                                <option value="right">右</option>
+                            </select>
+                            <label for="inputDragbarTitleDisplay">是否隐藏</label>
+                            <select type="text" class="form-control" id="inputDragbarTitleDisplay" placeholder="是否隐藏">
+                                <option value="none">是</option>
+                                <option value="block">否</option>
+                            </select>
+                            <label for="inputDragbarTitleBefore">前缀颜色</label>
+                            <div class="before-selector-color">
+                                <input type="text" onclick="dragSelector.beforeSelectShow(this);" class="form-control" id="inputDragbarTitleBefore" placeholder="前缀颜色">
+                                <div class="before-options-color">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragbarLinkName">链接名称</label>
+                            <input type="text" class="form-control" id="inputDragbarLinkName" placeholder="链接名称" />
+                            <label for="inputDragbarLinkPath">链接地址</label>
+                            <input type="text" class="form-control" id="inputDragbarLinkPath" placeholder="链接地址" />
+                            <label for="inputDragbarLinkSize">链接大小</label>
+                            <input type="text" class="form-control" id="inputDragbarLinkSize" placeholder="链接大小" />
+                            <label for="inputDragbarLinkColor">链接颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control" id="inputDragbarLinkColor" placeholder="链接颜色" />
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDragbarLinkFloat">链接位置</label>
+                            <select type="text" class="form-control" id="inputDragbarLinkFloat" placeholder="链接位置">
+                                <option value="right">右</option>
+                                <option value="left">左</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    第一列为x轴数据，从第二列开始每列代表一组数据
+                                </div>
+                                <div class="panel-body">
+                                    <div class="code-mirror-container">
+                                        <label for="inputDragbarSql">查询语句</label>
+                                        <textarea id="inputDragbarSql"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="inputDragbarTime">时间间隔</label>
+                            <input type="text" class="form-control" id="inputDragbarTime" placeholder="每隔几分钟更新一次" />
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDragbarTypes">类型扩展</label>
+                            <div style="display: inline-table; width:86%;">
+                                <input type="text" class="form-control" id="inputDragbarTypes" placeholder="类型扩展" />
+                                <label onclick="dragConst.expandedSelect('DragbarTypes');" style="background: url(../../../Content/Images/Icon16/向下.png) no-repeat scroll 4px 2px; cursor: pointer;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                <div id="DragbarTypes" style="display:none;">
+                                    <ul class="sys_spec_text">
+                                        <li value="bar">柱状</li>
+                                        <li value="line">折线</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDragbarId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="draglineSet" tabindex="-1" role="dialog" aria-labelledby="draglineSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">编辑折线图</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDraglineId" />
+                        <div class="form-group">
+                            <label for="inputDraglineCardColor">卡片颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDraglineCardColor" placeholder="卡片颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDraglineFontSize">图文大小</label>
+                            <input type="text" class="form-control" id="inputDraglineFontSize" placeholder="图形文字大小" />
+                            <!--<label for="inputDraglineColors">颜色设置</label>
+                                <div class="color-selector-bg">
+                                    <input type="text" class="form-control cardColor" id="inputDraglineColors" placeholder="颜色设置">
+                                    <span class="font-color colorsSelect" style="background: #ffffff;">&nbsp;</span>
+                                </div>-->
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDraglineTitle">表格标题</label>
+                            <input type="text" class="form-control" id="inputDraglineTitle" placeholder="表格标题" />
+                            <label for="inputDraglineTitleSize">标题大小</label>
+                            <input type="text" class="form-control" id="inputDraglineTitleSize" placeholder="标题大小" /><br />
+                            <label for="inputDraglineTitleColor">标题颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control cardColor" id="inputDraglineTitleColor" placeholder="标题颜色">
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div>
+                            <label for="inputDraglineTitleAlign">标题位置</label>
+                            <select type="text" class="form-control" id="inputDraglineTitleAlign" placeholder="标题位置">
+                                <option value="left">左</option>
+                                <option value="center">中</option>
+                                <option value="right">右</option>
+                            </select>
+                            <label for="inputDraglineTitleDisplay">是否隐藏</label>
+                            <select type="text" class="form-control" id="inputDraglineTitleDisplay" placeholder="是否隐藏">
+                                <option value="none">是</option>
+                                <option value="block">否</option>
+                            </select>
+                            <label for="inputDraglineTitleBefore">前缀颜色</label>
+                            <div class="before-selector-color">
+                                <input type="text" onclick="dragSelector.beforeSelectShow(this);" class="form-control" id="inputDraglineTitleBefore" placeholder="前缀颜色">
+                                <div class="before-options-color">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputDraglineLinkName">链接名称</label>
+                            <input type="text" class="form-control" id="inputDraglineLinkName" placeholder="链接名称" />
+                            <label for="inputDraglineLinkPath">链接地址</label>
+                            <input type="text" class="form-control" id="inputDraglineLinkPath" placeholder="链接地址" />
+                            <label for="inputDraglineLinkSize">链接大小</label>
+                            <input type="text" class="form-control" id="inputDraglineLinkSize" placeholder="链接大小" />
+                            <label for="inputDraglineLinkColor">链接颜色</label>
+                            <div class="color-selector-bg">
+                                <input type="text" class="form-control" id="inputDraglineLinkColor" placeholder="链接颜色" />
+                                <span class="font-color colorSelect" style="background: #ffffff;">&nbsp;</span>
+                            </div><br />
+                            <label for="inputDraglineLinkFloat">链接位置</label>
+                            <select type="text" class="form-control" id="inputDraglineLinkFloat" placeholder="链接位置">
+                                <option value="right">右</option>
+                                <option value="left">左</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    第一列为x轴数据，从第二列开始每列代表一组数据
+                                </div>
+                                <div class="panel-body">
+                                    <div class="code-mirror-container">
+                                        <label for="inputDraglineSql">查询语句</label>
+                                        <textarea id="inputDraglineSql"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="inputDraglineTime">时间间隔</label>
+                            <input type="text" class="form-control" id="inputDraglineTime" placeholder="每隔几分钟更新一次" />
+                        </div>
+                        <div class="form-group" style="display:none;">
+                            <label for="inputDraglineTypes">类型扩展</label>
+                            <div style="display: inline-table; width:86%;">
+                                <input type="text" class="form-control" id="inputDraglineTypes" placeholder="类型扩展" style="width:80%;" />
+                                <label onclick="dragConst.expandedSelect('DraglineTypes');" style="background: url(../../../Content/Images/Icon16/向下.png) no-repeat scroll 4px 2px; cursor: pointer;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                <div id="DraglineTypes" style="display:none;">
+                                    <ul class="sys_spec_text">
+                                        <li value="bar">柱状</li>
+                                        <li value="line">折线</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                    <button type="button" onclick="dragDivChange.editSaveDiv('inputDraglineId')" class="btn btn-primary">确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dragoutputSet" tabindex="-1" role="dialog" aria-labelledby="dragoutputSetLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">导出代码</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <input type="hidden" id="inputDraglineId" />
+                        <div class="form-group">
+                            <label for="inputDragHtml">代码</label>
+                            <textarea style="width: 80%;" id="inputDragHtml" placeholder="代码" class="form-control" rows="100"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"> 关闭 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--看板-->
+    <div id="rulerOuter">
+        <div id="rulerInner">
+            <div id="title" class="title handle-title" style="font-size: 20px;color:black;display:block;text-align:left;padding:20px;" newstyle="font-size: 20px;color:black;display:block;text-align:left;padding:20px;">
+                看板标题
+            </div>
+            <input type="hidden" id="inputDragId" value="123" />
+            <div class="gridster">
+                <ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            new Ruler().wrap('rulerInner');
+        });
+    </script>
+</body>
+</html>

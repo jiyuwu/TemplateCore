@@ -1,5 +1,6 @@
 ﻿using Common;
 using DTO;
+using DTO.KanBan;
 using DTO.PowerManager;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -34,6 +35,7 @@ namespace Service
         public DbSet<Role> Roles { get; set; }
         public DbSet<Role_Menu> Role_Menus { get; set; }
         public DbSet<Role_Menu_Enum> Role_Menu_Enums { get; set; }
+        public DbSet<KBInfo> KBInfos { get; set; }
 
         /// <summary>
         /// 重写模型绑定的方法OnModelCreating，然后设置对应实体属性的规则(约定)，这种方式叫做Fluent API
