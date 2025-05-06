@@ -1,6 +1,7 @@
 ﻿using DTO;
 using DTO.PowerManager;
 using IService.PowerManager;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,15 @@ namespace Service.Service.PowerManager
         {
             using (BPMDbContext db = new BPMDbContext())
             {
+                long nextId = 1; // Default if the table is empty.
+                if (db.Role_Menu_Enums.Any())
+                {
+                    nextId = db.Role_Menu_Enums.Max(k => k.Id) + 1;
+                }
                 foreach (Role_Menu_Enum Information in InformationList)
                 {
+                    Information.Id = nextId;
+                    nextId++;
                     Information.Create_time = DateTime.Now;
                     Information.Update_time = DateTime.Now;
                     db.Role_Menu_Enums.Add(Information);

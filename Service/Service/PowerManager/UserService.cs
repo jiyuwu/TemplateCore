@@ -2,6 +2,7 @@
 using DTO.PowerManager;
 using IService.PowerManager;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,12 @@ namespace Service.Service.PowerManager
         {
             using (BPMDbContext db = new BPMDbContext())
             {
+                long nextId = 1; // Default if the table is empty.
+                if (db.Users.Any())
+                {
+                    nextId = db.Users.Max(k => k.Id) + 1;
+                }
+                UserInformation.Id = nextId;
                 UserInformation.Create_time = DateTime.Now;
                 UserInformation.Update_time = DateTime.Now;
                 db.Users.Add(UserInformation);

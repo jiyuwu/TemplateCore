@@ -15,6 +15,12 @@ namespace Service.Service.PowerManager
         {
             using (BPMDbContext db = new BPMDbContext())
             {
+                long nextId = 1; // Default if the table is empty.
+                if (db.Roles.Any())
+                {
+                    nextId = db.Roles.Max(k => k.Id) + 1;
+                }
+                Information.Id = nextId;
                 Information.Create_time = DateTime.Now;
                 Information.Update_time = DateTime.Now;
                 db.Roles.Add(Information);
