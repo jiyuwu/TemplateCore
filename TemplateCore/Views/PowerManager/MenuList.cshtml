@@ -30,34 +30,15 @@
 
 
 <script>
-    layui.use([ 'laydate', 'layer', 'table', 'treetable'], function () {
-        var laydate = layui.laydate;
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#end' //指定元素
-        });
-
-        var table = layui.table;
-		var layer = layui.layer;
-		var treetable = layui.treetable;
-        // 渲染表格
-        var renderTable = function () {//树桩表格参考文档：https://gitee.com/whvse/treetable-lay
-            layer.load(3);
-            treetable.render({
-                treeColIndex: 1,//树形图标显示在第几列
-                treeSpid: 0,//最上级的父级id
-                treeIdName: 'id',//id字段的名称
-                treePidName: 'parentId',//pid字段的名称
-                treeDefaultClose: false,//是否默认折叠
-                treeLinkage: true,//父级展开时是否自动展开所有子级
-                elem: '#permissionTable',
-                url: '../../PowerManager/AllMenuList',
-                page: false,
+        layui.use(function(){
+      var treeTable = layui.treeTable;
+      var layer = layui.layer;
+      // 渲染
+      var inst = treeTable.render({
+        elem: '#permissionTable',
+        id:'myTreeTable',
+        url: '../../PowerManager/AllMenuList', // 此处为静态模拟数据，实际使用时需换成真实接口
+        page: false,
                 cols: [[
                     {field: 'id', title: '代号',width:'10%'},
                     {field: 'name', title: '菜单名称',width:'20%'},
@@ -65,13 +46,13 @@
                     {field: 'enumSgin', title: '按钮标志'},
                     {field: 'displayOrder', title: '排序',width:'10%'},
                     {field: 'isLeaf', title: '类型',
-                    	templet: function(d){
-                    		if(d.isLeaf==0){
-                    			return '菜单';
-                    		}else{
-                    			return '按钮';
-                    		}
-                        },width:'10%'	
+                        templet: function(d){
+                            if(d.isLeaf==0){
+                                return '菜单';
+                            }else{
+                                return '按钮';
+                            }
+                        },width:'10%'
                     },
                     {templet: complain, title: '操作',width:'10%'}
                 ]],
@@ -81,38 +62,47 @@
                     if (@ViewBag.Add== 0) $(".AddData").hide();
                     if (@ViewBag.Edit== 0) $(".EditData").hide();
                 }
-            });
-        };
-
-        renderTable();
-
-    function complain(d){//操作中显示的内容
-        	if(d.urlOrClass!=null){
-        		return [
-                        '<a class="operation EditData" lay-event="edit" href="javascript:void(0)" onclick="x_admin_show(\'编辑\',\'./MenuAddOrEdit?Id='+ d.id + '\')" title="编辑">',
-            	     	'<i class="layui-icon layui-icon-edit"></i></a>',
-            	     	'<a class="operation DelData" lay-event="" href="javascript:void(0)" onclick="member_del(\''+this+','+ d.id + '\')" title="删除">',
-            	     	'<i class="layui-icon layui-icon-delete" ></i></a>',
-            	     	].join('');
-        	}else{
-        		return '';
-        	}
-        	
+      });
+      treeTable.expandAll("myTreeTable", expandFlag);
+      // 表头工具栏工具事件
+      treeTable.on("toolbar(permissionTable)", function (obj) {
+        var config = obj.config;
+        var tableId = config.id;
+        var status = treeTable.checkStatus(tableId);
+        // 获取选中行
+        if (obj.event === "getChecked") {
+          if(!status.data.length) return layer.msg('无选中数据');
+          console.log(status);
+          layer.alert("当前数据选中已经输出到控制台，<br>您可按 F12 从控制台中查看结果。");
         }
-        //监听工具条
-        table.on('tool(permissionTable)', function (obj) {
+      });
+      
+
+      function complain(d){//操作中显示的内容
+            if(d.id!=null){
+                return [
+                        '<a class="operation EditData" lay-event="edit" href="javascript:void(0)" onclick="x_admin_show(\'编辑\',\'./MenuAddOrEdit?Id='+ d.id + '\')" title="编辑">',
+                        '<i class="layui-icon layui-icon-edit"></i></a>',
+                        '<a class="operation DelData" lay-event="" href="javascript:void(0)" onclick="member_del(\''+this+','+ d.id + '\')" title="删除">',
+                        '<i class="layui-icon layui-icon-delete" ></i></a>',
+                        ].join('');
+            }else{
+                return '';
+            }
+
+        }
+         //监听工具条
+        treeTable.on('tool(permissionTable)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
-			if(data.permissionName!=null){
-				if (layEvent === 'del') {
-	                layer.msg('删除' + data.id);
-	            } else if (layEvent === 'edit') {
-	                layer.msg('修改' + data.id);
-	            }
-			}
+            if(data.permissionName!=null){
+                if (layEvent === 'del') {
+                    layer.msg('删除' + data.id);
+                } else if (layEvent === 'edit') {
+                    layer.msg('修改' + data.id);
+                }
+            }
         });
-
-
 
     });
 

@@ -266,9 +266,9 @@ xblock{
 .container .layui-nav-item{
     line-height: 45px;
 }
-.container .layui-nav-more{
+/*.container .layui-nav-more{
     top: 20px;
-}
+}*/
 .container .layui-nav-child{
     top: 50px;
 }

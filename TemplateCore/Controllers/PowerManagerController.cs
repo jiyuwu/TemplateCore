@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BPM.Controllers
@@ -156,11 +157,48 @@ namespace BPM.Controllers
             #endregion
             return View();
         }
+        private static List<object> BuildMenuTree(List<Menu> menuList)
+        {
+            // Create a lookup for parent-child relationships
+            var lookup = menuList.ToLookup(m => m.ParentId, m => m);
 
+            // Helper function to recursively build the tree
+            object BuildNode(Menu menu)
+            {
+                var node = new Dictionary<string, object>
+            {
+                { "id", menu.Id },
+                { "name", menu.Name },
+                { "type", menu.Type },
+                { "enumSgin", menu.EnumSgin },
+                { "urlOrClass", menu.UrlOrClass },
+                { "isLeaf", menu.IsLeaf },
+                { "displayOrder", menu.DisplayOrder },
+                { "create_time", menu.Create_time },
+                { "update_time", menu.Update_time },
+                { "state", menu.State },
+                // Add other properties as needed
+            };
+
+                var children = lookup[Convert.ToInt32(menu.Id)].ToList();
+                if (children.Any())
+                {
+                    node["children"] = children.Select(BuildNode).ToList();
+                }
+
+                return node;
+            }
+
+
+            // Get top-level nodes (ParentId = 0)
+            var topLevelNodes = lookup[0].ToList();
+            return topLevelNodes.Select(BuildNode).ToList();
+        }
         public string AllMenuList()
         {
             List<Menu> menuList = menuService.GetAllList();
-            string  getJson= "{\"code\":0,\"msg\":\"true\",\"data\":" + CommonHelper.GetJson(menuList) + ",\"count\":"+ menuList.Count + "}";
+            var treeData = BuildMenuTree(menuList);
+            string  getJson= "{\"code\":0,\"msg\":\"true\",\"data\":" + CommonHelper.SerializeJSON(treeData) + ",\"count\":"+ menuList.Count + "}";
             return getJson;
         }
         public IActionResult MenuAddOrEdit()

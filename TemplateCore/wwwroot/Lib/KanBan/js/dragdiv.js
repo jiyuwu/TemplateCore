@@ -4594,7 +4594,7 @@ var dragOutPutHtml = {
           });
           </script>
       `;
-        Loading(true, "正在提交数据...");
+        layer.msg('一段提示信息');
         window.setTimeout(function () {
             var postData = {
                 Title: title,
@@ -4605,7 +4605,7 @@ var dragOutPutHtml = {
                 Id: id,
             }
             AjaxJson("/KanBanModule/KBInfo/SubmitForm?KeyValue=" + id, postData, function (data) {
-                tipDialog(data.Message, 3, data.Code);
+                //tipDialog(data.Message, 3, data.Code);
                 if ($("#inputDragId").val() == "") {
                     $("#inputDragId").val(data.KeyId);
                 }
